@@ -12,7 +12,11 @@ defmodule SchemaAssertions do
   @spec assert_schema(module()) :: true
   def assert_schema(schema_module) do
     if !Schema.module_exists?(schema_module) do
-      flunk("Schema module #{schema_module} does not exist.")
+      flunk("Schema module #{inspect(schema_module)} does not exist.")
+    end
+
+    if !Schema.ecto_schema?(schema_module) do
+      flunk("Schema module #{inspect(schema_module)} is not an Ecto schema.")
     end
 
     true
