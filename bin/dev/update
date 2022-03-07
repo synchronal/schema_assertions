@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+git pull --rebase
+mix deps.get
+mix deps.compile

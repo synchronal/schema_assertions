@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+bin/dev/format --check
+bin/dev/update
+bin/dev/test
+git push origin HEAD

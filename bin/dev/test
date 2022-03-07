@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+mix credo
+mix dialyzer
+MIX_ENV=test mix compile --force --warnings-as-errors 
+mix test --color --warnings-as-errors
