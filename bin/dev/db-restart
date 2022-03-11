@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+bin/dev/db-stop -q && bin/dev/db-start

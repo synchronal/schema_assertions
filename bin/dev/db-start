@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Starts postgres using pg_ctl
+
+source ".medic/_support/cecho.sh"
+source ".medic/_support/step.sh"
+
+set -eo pipefail
+
+if ! command -v asdf > /dev/null ; then
+  cecho --bright-bold-red "asdf is not installed"
+  cecho --yellow "This script assumes that Postgres is installed via asdf"
+  exit 1
+fi
+
+if eval "asdf plugin-list | grep postgres > /dev/null 2>&1"; then
+  pgdir="$(pwd)/priv/postgres"
+  postgres_path="$(asdf where postgres)"
+  log_path="${pgdir}/logfile"
+  datadir="${pgdir}/data"
+  mkdir -p ${datadir}
+else
+  cecho --yellow "${0}:" --bright-bold-red "asdf postgres plugin not found"
+  exit 1
+fi
+
+if [[ -f ${datadir}/PG_VERSION ]]; then
+  step "Starting postgres" "${postgres_path}/bin/pg_ctl -D ${datadir} -l ${log_path} start"
+  echo ""
+else
+  cecho --yellow "${0}:" --bright-bold-red "${datadir}" --red "does not seem to be a postgres data directory"
+  cecho --yellow "Try running" --bright-bold-yellow "pg_ctl -D ${datadir} initdb"
+fi

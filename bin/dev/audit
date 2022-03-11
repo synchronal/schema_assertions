@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+mix credo
+mix dialyzer

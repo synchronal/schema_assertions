@@ -1,8 +1,3 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -exo pipefail
-
-mix credo
-mix dialyzer
-MIX_ENV=test mix compile --force --warnings-as-errors 
-mix test --color --warnings-as-errors
+elixir -r .medic/require.exs -e "Medic.Test.run()" $*

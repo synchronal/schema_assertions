@@ -1,10 +1,13 @@
- *.ez
+*.ez
+.medic/.doctor.out
+.medic/skipped
 /_build/
 /.fetch
 /cover/
 /deps/
 /doc/
 /priv/plts
+/priv/postgres
 /tmp/
 erl_crash.dump
 schema_assertions-*.tar
