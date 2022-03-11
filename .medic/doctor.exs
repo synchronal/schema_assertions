@@ -8,5 +8,4 @@
   {Medic.Checks.Postgres, :correct_version_running?},
   {Medic.Checks.Postgres, :role_exists?},
   {Medic.Checks.Postgres, :correct_data_directory?, [remedy: "bin/dev/db-restart"]}
-  # {Medic.Checks.Postgres, :database_exists?, ["schema_assertions_dev"]}
 ]

@@ -1,8 +1,15 @@
 defmodule SchemaAssertions.MixProject do
   use Mix.Project
 
+  def application do
+    [
+      extra_applications: [:logger]
+    ]
+  end
+
   def project do
     [
+      aliases: aliases(),
       app: :schema_assertions,
       deps: deps(),
       description: "ExUnit assertions for Ecto schemas",
@@ -16,20 +23,23 @@ defmodule SchemaAssertions.MixProject do
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
-  def application do
+  # # #
+
+  defp aliases do
     [
-      extra_applications: [:logger]
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
-      {:ecto, "~> 3.0", optional: true},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:ecto_sql, "~> 3.0", optional: true},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:postgrex, ">= 0.0.0", only: :test}
     ]
   end
 
