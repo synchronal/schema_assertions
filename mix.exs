@@ -44,7 +44,7 @@ defmodule SchemaAssertions.MixProject do
   defp docs do
     [
       main: "SchemaAssertions",
-      extras: ["README.md"]
+      extras: ["README.md", "license.txt"]
     ]
   end
 
