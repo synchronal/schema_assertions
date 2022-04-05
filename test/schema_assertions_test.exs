@@ -33,7 +33,7 @@ defmodule SchemaAssertionsTest do
 
     test "fails when the table name does not match the schema's table name" do
       assert_raise ExUnit.AssertionError,
-                   ~s|\n\nAssertion with == failed\ncode:  assert Schema.table_name(schema_module) == table_name\nleft:  "houses"\nright: "cars"\n|,
+                   ~s|\n\nExpected SchemaAssertions.Test.Schema.House to specify table name "cars" but was "houses"\n|,
                    fn ->
                      SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "cars")
                    end
