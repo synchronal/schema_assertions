@@ -5,6 +5,16 @@ defmodule SchemaAssertions.SchemaTest do
   alias SchemaAssertions.Schema
   alias SchemaAssertions.Test
 
+  describe "ecto_schema?" do
+    test "returns true when the module is an Ecto schema" do
+      assert Schema.ecto_schema?(Test.Schema.House)
+    end
+
+    test "returns false when the module is not an Ecto schema" do
+      refute Schema.ecto_schema?(Test.Schema.NotAnEctoSchema)
+    end
+  end
+
   describe "module_exists?" do
     test "returns true if the given module exists" do
       assert Schema.module_exists?(Test.Schema.House)
