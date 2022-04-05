@@ -1,4 +1,10 @@
 defmodule SchemaAssertions.Database do
+  @moduledoc """
+  Functions for inspecting the database.
+
+  Assumes Postgres for now.
+  """
+
   def all_table_names() do
     "select table_name from information_schema.tables where table_schema = 'public'"
     |> query()
