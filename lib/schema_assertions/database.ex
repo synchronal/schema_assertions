@@ -45,8 +45,16 @@ defmodule SchemaAssertions.Database do
 
   defp repo() do
     case Application.get_env(:schema_assertions, :ecto_repos) do
-      [repo] -> repo
-      repos -> raise "Expected exactly 1 repo but got: #{inspect(repos)}"
+      [repo] ->
+        repo
+
+      repos ->
+        raise """
+        Expected exactly 1 repo but got: #{inspect(repos)}
+             Add the following to `config/test.exs`:
+
+             config :schema_assertions, :ecto_repos, [MyApp.Repo]
+        """
     end
   end
 
