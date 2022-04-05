@@ -4,7 +4,25 @@ defmodule SchemaAssertionsTest do
 
   describe "assert_schema" do
     test "succeeds when the schema is valid according to the function args" do
-      SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "houses")
+      SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "houses", address: :text, id: :id)
+    end
+
+    test "fails when an expected field does not exist in the database" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected fields to match database
+                        Added fields:
+                          [id: :bigint]
+                        Missing fields:
+                          [id: :id, population: :integer]
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "houses",
+                       address: :text,
+                       id: :id,
+                       population: :integer
+                     )
+                   end
     end
 
     test "fails when the schema module does not exist" do
@@ -25,7 +43,7 @@ defmodule SchemaAssertionsTest do
 
     test "fails when the table does not exist" do
       assert_raise ExUnit.AssertionError,
-                   ~s|\n\nDatabase table "non_existent_table_name" not found in ["cars", "houses", "schema_migrations"]\n|,
+                   ~s|\n\nDatabase table "non_existent_table_name" not found in ["cars", "houses", "pets", "schema_migrations"]\n|,
                    fn ->
                      SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "non_existent_table_name")
                    end

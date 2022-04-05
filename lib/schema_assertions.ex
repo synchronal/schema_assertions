@@ -5,19 +5,43 @@ defmodule SchemaAssertions do
 
   import ExUnit.Assertions
   alias SchemaAssertions.Database
+  alias SchemaAssertions.Fieldset
   alias SchemaAssertions.Schema
 
   @doc """
   Asserts that the given schema module exists and that its corresponding database table exists.
   """
-  @spec assert_schema(module(), binary()) :: true
-  def assert_schema(schema_module, table_name) do
+  @spec assert_schema(module(), binary(), Keyword.t()) :: true
+  def assert_schema(schema_module, table_name, fields \\ []) do
     assert_schema_module_exists(schema_module)
     assert_is_ecto_schema(schema_module)
     assert_schema_table_exists(table_name)
     assert_schema_table_name(schema_module, table_name)
+    assert_fields(schema_module, fields)
 
     true
+  end
+
+  def assert_fields(schema_module, fields) do
+    schema_module
+    |> Schema.table_name()
+    |> Database.fieldset()
+    |> Fieldset.same?(fields)
+    |> case do
+      :ok ->
+        true
+
+      {:error, [added: added, missing: missing]} ->
+        flunk(
+          to_string([
+            "Expected fields to match database\n",
+            "Added fields:\n  ",
+            inspect(added),
+            "\nMissing fields:\n  ",
+            inspect(missing)
+          ])
+        )
+    end
   end
 
   def assert_is_ecto_schema(schema_module) do
