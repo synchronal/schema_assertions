@@ -2,6 +2,8 @@
 
 ExUnit assertions for Ecto schemas.
 
+Work in progress.
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
@@ -19,6 +21,7 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/schema_assertions](https://hexdocs.pm/schema_assertions).
 
-## Copyright and License
+## License
 
-Copyright 2022 by Erik Hanson. This code is available under the Apache 2.0 license. See also [license](./license.txt). Based on code I wrote that lives in [Epi Viewpoint](https://github.com/RatioPBC/epi-viewpoint).
+This code is available under the Apache 2.0 license. See also [license](./license.txt).
+Based on code from [Epi Viewpoint](https://github.com/RatioPBC/epi-viewpoint).
