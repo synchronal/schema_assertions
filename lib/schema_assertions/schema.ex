@@ -12,4 +12,10 @@ defmodule SchemaAssertions.Schema do
   def module_exists?(module) do
     Code.ensure_loaded?(module)
   end
+
+  @doc "Returns the database table name for the given module"
+  @spec table_name(module()) :: binary()
+  def table_name(module) do
+    module.__schema__(:source)
+  end
 end

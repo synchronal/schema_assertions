@@ -24,6 +24,8 @@ defmodule SchemaAssertions do
       flunk("Database table #{inspect(table_name)} not found in #{inspect(Database.all_table_names())}")
     end
 
+    assert Schema.table_name(schema_module) == table_name
+
     true
   end
 end

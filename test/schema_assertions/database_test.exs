@@ -4,8 +4,8 @@ defmodule SchemaAssertions.DatabaseTest do
   alias SchemaAssertions.Database
 
   describe "all_table_names" do
-    test "lists all the table names" do
-      assert Database.all_table_names() == ["houses", "schema_migrations"]
+    test "lists all the table names, in alphabetical order" do
+      assert Database.all_table_names() == ["cars", "houses", "schema_migrations"]
     end
   end
 

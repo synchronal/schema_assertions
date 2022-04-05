@@ -26,4 +26,10 @@ defmodule SchemaAssertions.SchemaTest do
       refute Schema.module_exists?(Test.Schema.NonExistent)
     end
   end
+
+  describe "table_name" do
+    test "returns the name of the schema's database table" do
+      assert Schema.table_name(Test.Schema.House) == "houses"
+    end
+  end
 end
