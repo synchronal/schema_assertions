@@ -7,10 +7,12 @@ defmodule SchemaAssertions.SchemaTest do
 
   describe "ecto_schema?" do
     test "returns true when the module is an Ecto schema" do
+      Code.ensure_loaded?(Test.Schema.House)
       assert Schema.ecto_schema?(Test.Schema.House)
     end
 
     test "returns false when the module is not an Ecto schema" do
+      Code.ensure_loaded?(Test.Schema.NotAnEctoSchema)
       refute Schema.ecto_schema?(Test.Schema.NotAnEctoSchema)
     end
   end
