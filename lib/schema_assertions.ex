@@ -8,7 +8,7 @@ defmodule SchemaAssertions do
   alias SchemaAssertions.Schema
 
   @doc """
-  Asserts that the given schema module exists.
+  Asserts that the given schema module exists and that its corresponding database table exists.
   """
   @spec assert_schema(module(), binary()) :: true
   def assert_schema(schema_module, table_name) do

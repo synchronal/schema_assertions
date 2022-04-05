@@ -5,6 +5,8 @@ defmodule SchemaAssertions.Database do
   Assumes Postgres for now.
   """
 
+  @doc "Returns a sorted list of all the table names"
+  @spec all_table_names() :: [binary()]
   def all_table_names() do
     "select table_name from information_schema.tables where table_schema = 'public'"
     |> query()
@@ -12,6 +14,8 @@ defmodule SchemaAssertions.Database do
     |> Enum.sort()
   end
 
+  @doc "Returns true if a table with the given name is in the database"
+  @spec table_exists?(binary()) :: boolean()
   def table_exists?(table_name) do
     table_name in all_table_names()
   end
