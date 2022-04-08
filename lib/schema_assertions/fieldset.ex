@@ -21,6 +21,7 @@ defmodule SchemaAssertions.Fieldset do
   defp normalize(fieldset) do
     Enum.map(fieldset, fn
       {key, :binary_id} -> {key, :uuid}
+      {key, :decimal} -> {key, :numeric}
       {key, :id} -> {key, :bigint}
       other -> other
     end)
