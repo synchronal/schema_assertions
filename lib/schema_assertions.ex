@@ -22,6 +22,44 @@ defmodule SchemaAssertions do
     true
   end
 
+  @spec assert_has_many(module(), atom(), module() | Keyword.t()) :: true
+  def assert_has_many(schema_module, association, association_module_or_opts) do
+    case Schema.has_many?(schema_module, association, association_module_or_opts) do
+      :ok ->
+        true
+
+      {:error, :has_many, error} ->
+        flunk(
+          to_string([
+            "Expected ",
+            inspect(schema_module),
+            " to have many\n  ",
+            inspect(association),
+            "\nto\n  ",
+            inspect(association_module_or_opts),
+            "\n\n",
+            error
+          ])
+        )
+
+      {:error, :has_many_through, error} ->
+        flunk(
+          to_string([
+            "Expected ",
+            inspect(schema_module),
+            " to have many\n  ",
+            inspect(association),
+            "\n\n",
+            inspect(association_module_or_opts),
+            "\n\n",
+            error
+          ])
+        )
+    end
+  end
+
+  # # #
+
   def assert_fields(schema_module, fields) do
     schema_module
     |> Schema.table_name()

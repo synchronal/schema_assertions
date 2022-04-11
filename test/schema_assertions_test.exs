@@ -57,4 +57,73 @@ defmodule SchemaAssertionsTest do
                    end
     end
   end
+
+  describe "assert_has_many" do
+    alias SchemaAssertions.Test.Schema.House
+
+    test("succeeds when the schema has a relationship according the function args") do
+      SchemaAssertions.assert_has_many(House, :rooms, SchemaAssertions.Test.Schema.Room)
+      SchemaAssertions.assert_has_many(House, :windows, through: [:rooms, :windows])
+    end
+
+    test "fails when no association exists" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.House to have many
+                          :people
+                        to
+                          SchemaAssertions.Test.Schema.Person
+                        
+                        Association not found
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_has_many(House, :people, SchemaAssertions.Test.Schema.Person)
+                   end
+    end
+
+    test "fails when association module does not match" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.House to have many
+                          :rooms
+                        to
+                          SchemaAssertions.Test.Schema.Window
+                        
+                        Found module: Elixir.SchemaAssertions.Test.Schema.Room
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_has_many(House, :rooms, SchemaAssertions.Test.Schema.Window)
+                   end
+    end
+
+    test "fails when no through association exists" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.House to have many
+                          :people
+                        
+                        [through: [:rooms, :people]]
+                        
+                        Association not found
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_has_many(House, :people, through: [:rooms, :people])
+                   end
+    end
+
+    test "fails when through association does not match" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.House to have many
+                          :windows
+                        
+                        [through: [:rooms, :people]]
+                        
+                        Found: [:rooms, :windows]
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_has_many(House, :windows, through: [:rooms, :people])
+                   end
+    end
+  end
 end

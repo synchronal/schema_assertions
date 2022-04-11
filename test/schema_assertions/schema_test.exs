@@ -17,6 +17,46 @@ defmodule SchemaAssertions.SchemaTest do
     end
   end
 
+  describe "has_many?" do
+    test "returns :ok when the schema has a has_many relationship" do
+      Code.ensure_loaded?(Test.Schema.House)
+      assert :ok = Schema.has_many?(Test.Schema.House, :rooms, Test.Schema.Room)
+    end
+
+    test "returns :ok when the schema has a has_many :through relationship" do
+      Code.ensure_loaded?(Test.Schema.House)
+      assert :ok = Schema.has_many?(Test.Schema.House, :windows, through: [:rooms, :windows])
+    end
+
+    test "returns error when the associated module does not match" do
+      Code.ensure_loaded?(Test.Schema.House)
+
+      assert {:error, :has_many, "Found module: Elixir.SchemaAssertions.Test.Schema.Room"} =
+               Schema.has_many?(Test.Schema.House, :rooms, Test.Schema.Window)
+    end
+
+    test "returns error when the schema does not have a has_many relationship" do
+      Code.ensure_loaded?(Test.Schema.House)
+
+      assert {:error, :has_many, "Association not found"} =
+               Schema.has_many?(Test.Schema.House, :people, Test.Schema.Person)
+    end
+
+    test "returns error when the schema does not have a has_many :through relationship" do
+      Code.ensure_loaded?(Test.Schema.House)
+
+      assert {:error, :has_many_through, "Association not found"} =
+               Schema.has_many?(Test.Schema.House, :people, through: [:rooms, :people])
+    end
+
+    test "returns error when the :through relationship does not match" do
+      Code.ensure_loaded?(Test.Schema.House)
+
+      assert {:error, :has_many_through, "Found: [:rooms, :windows]"} =
+               Schema.has_many?(Test.Schema.House, :windows, through: [:rooms, :people])
+    end
+  end
+
   describe "module_exists?" do
     test "returns true if the given module exists" do
       assert Schema.module_exists?(Test.Schema.House)
