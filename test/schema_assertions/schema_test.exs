@@ -23,8 +23,7 @@ defmodule SchemaAssertions.SchemaTest do
     end
 
     test "returns error when the schema does not have a belongs_to relationship" do
-      assert {:error, "Association not found"} =
-               Schema.belongs_to?(Test.Schema.House, :person, Test.Schema.Person)
+      assert {:error, "Association not found"} = Schema.belongs_to?(Test.Schema.House, :person, Test.Schema.Person)
     end
   end
 
