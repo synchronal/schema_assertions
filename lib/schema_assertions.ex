@@ -9,6 +9,37 @@ defmodule SchemaAssertions do
   alias SchemaAssertions.Schema
 
   @doc """
+  Asserts that the given schema module has a belongs_to association.
+
+  ## Example
+
+      iex> alias SchemaAssertions.Test.Schema
+      iex> SchemaAssertions.assert_belongs_to(Schema.Room, :house, Schema.House)
+      true
+  """
+  @spec assert_belongs_to(module(), atom(), module()) :: true
+  def assert_belongs_to(schema_module, association, association_module) do
+    case Schema.belongs_to?(schema_module, association, association_module) do
+      :ok ->
+        true
+
+      {:error, error} ->
+        flunk(
+          to_string([
+            "Expected ",
+            inspect(schema_module),
+            " to belong to\n  ",
+            inspect(association),
+            "\nvia\n  ",
+            inspect(association_module),
+            "\n\n",
+            error
+          ])
+        )
+    end
+  end
+
+  @doc """
   Asserts that the given schema module exists and that its corresponding database table exists.
   """
   @spec assert_schema(module(), binary(), Keyword.t()) :: true
@@ -22,6 +53,19 @@ defmodule SchemaAssertions do
     true
   end
 
+  @doc """
+  Asserts that the given schema module has a has_many or has_many :through association.
+
+  ## Example
+
+      iex> alias SchemaAssertions.Test.Schema
+      iex> SchemaAssertions.assert_has_many(Schema.House, :rooms, Schema.Room)
+      true
+
+      iex> alias SchemaAssertions.Test.Schema
+      iex> SchemaAssertions.assert_has_many(Schema.House, :windows, through: [:rooms, :windows])
+      true
+  """
   @spec assert_has_many(module(), atom(), module() | Keyword.t()) :: true
   def assert_has_many(schema_module, association, association_module_or_opts) do
     case Schema.has_many?(schema_module, association, association_module_or_opts) do

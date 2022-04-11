@@ -1,6 +1,21 @@
 defmodule SchemaAssertions.Schema do
   @moduledoc "Ecto schema introspection"
 
+  @doc "Returns true if the given module has a belongs_to relationship"
+  @spec belongs_to?(module(), atom(), module()) :: :ok | {:error, String.t()}
+  def belongs_to?(module, assoc_name, assoc_module) do
+    case module.__schema__(:association, assoc_name) do
+      %Ecto.Association.BelongsTo{queryable: ^assoc_module} ->
+        :ok
+
+      %Ecto.Association.BelongsTo{queryable: queryable} ->
+        {:error, "Found module: #{queryable}"}
+
+      _other ->
+        {:error, "Association not found"}
+    end
+  end
+
   @doc "Returns true if the given module is an Ecto schema"
   @spec ecto_schema?(module()) :: boolean()
   def ecto_schema?(module) do

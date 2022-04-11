@@ -1,6 +1,45 @@
 defmodule SchemaAssertionsTest do
   @moduledoc false
   use ExUnit.Case, async: true
+  alias SchemaAssertions.Test.Schema
+
+  doctest SchemaAssertions
+
+  describe "assert_belongs_to" do
+    test "succeeds when the schema has a relationship according the function args" do
+      SchemaAssertions.assert_belongs_to(Schema.Room, :house, Schema.House)
+    end
+
+    test "fails when no association exists" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.Room to belong to
+                          :window
+                        via
+                          SchemaAssertions.Test.Schema.Window
+                        
+                        Association not found
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_belongs_to(Schema.Room, :window, Schema.Window)
+                   end
+    end
+
+    test "fails when through association does not match" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.Room to belong to
+                          :house
+                        via
+                          SchemaAssertions.Test.Schema.Window
+                        
+                        Found module: Elixir.SchemaAssertions.Test.Schema.House
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_belongs_to(Schema.Room, :house, Schema.Window)
+                   end
+    end
+  end
 
   describe "assert_schema" do
     test "succeeds when the schema is valid according to the function args" do
