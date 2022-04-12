@@ -22,7 +22,7 @@ defmodule SchemaAssertions.Fieldset do
     Enum.map(fieldset, fn
       {key, :binary_id} -> {key, :uuid}
       {key, :decimal} -> {key, :numeric}
-      {key, :id} -> {key, :bigint}
+      {key, :id} -> {key, :bigserial}
       other -> other
     end)
     |> MapSet.new()

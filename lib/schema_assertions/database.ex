@@ -18,14 +18,30 @@ defmodule SchemaAssertions.Database do
   def fieldset(table_name) do
     query(
       """
-      SELECT information_schema.columns.column_name, information_schema.columns.data_type, information_schema.columns.udt_name, information_schema.element_types.data_type
-        FROM information_schema.columns
-        LEFT JOIN information_schema.element_types
-          ON information_schema.columns.dtd_identifier=information_schema.element_types.collection_type_identifier
-            AND information_schema.element_types.object_name = $1
-            AND information_schema.element_types.object_type = 'TABLE'
-        WHERE information_schema.columns.table_name = $1
-        ORDER BY information_schema.columns.column_name
+      SELECT a.attname,
+        CASE WHEN a.atttypid = ANY ('{int,int8,int2}'::regtype[])
+                AND EXISTS (
+                   SELECT FROM pg_attrdef ad
+                   WHERE  ad.adrelid = a.attrelid
+                   AND    ad.adnum   = a.attnum
+                   AND    pg_get_expr(ad.adbin, ad.adrelid)
+                        = 'nextval('''
+                       || (pg_get_serial_sequence (a.attrelid::regclass::text
+                                                , a.attname))::regclass
+                       || '''::regclass)'
+                   )
+              THEN CASE a.atttypid
+                      WHEN 'int'::regtype  THEN 'serial'
+                      WHEN 'int8'::regtype THEN 'bigserial'
+                      WHEN 'int2'::regtype THEN 'smallserial'
+                   END
+              ELSE format_type(a.atttypid, a.atttypmod)
+              END AS data_type
+      FROM   pg_attribute  a
+      WHERE  a.attrelid = $1::text::regclass
+      AND    a.attnum > 0
+      AND    NOT a.attisdropped
+      ORDER  BY a.attname;
       """,
       [table_name]
     )
@@ -58,12 +74,12 @@ defmodule SchemaAssertions.Database do
     end
   end
 
-  defp to_field([column_name, "character varying", _udt_name, _element_type]),
+  defp to_field([column_name, "character varying" <> _]),
     do: {String.to_atom(column_name), :string}
 
-  defp to_field([column_name, "timestamp without time zone", _udt_name, _element_type]),
+  defp to_field([column_name, "timestamp(0) without time zone"]),
     do: {String.to_atom(column_name), :utc_datetime}
 
-  defp to_field([column_name, column_type, _udt_name, _element_type]),
+  defp to_field([column_name, column_type]),
     do: {String.to_atom(column_name), String.to_atom(column_type)}
 end

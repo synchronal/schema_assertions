@@ -13,7 +13,7 @@ defmodule SchemaAssertions.DatabaseTest do
     test "translates columns for a table into a keyword list of fields, in alphabetical order" do
       assert Database.fieldset("houses") == [
                address: :text,
-               id: :bigint
+               id: :bigserial
              ]
     end
 

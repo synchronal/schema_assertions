@@ -8,12 +8,14 @@ defmodule SchemaAssertions.FieldsetTest do
       assert :ok = Fieldset.same?([foo: :bigint, bar: :string], bar: :string, foo: :bigint)
     end
 
-    test "succeeds when an expected :id field is a bigint" do
-      assert :ok = Fieldset.same?([foo: :bigint, bar: :string], foo: :id, bar: :string)
+    test "succeeds when an expected :id field is a bigserial" do
+      assert :ok = Fieldset.same?([foo: :bigserial, bar: :string], foo: :id, bar: :string)
+      assert :ok = Fieldset.same?([foo: :bigserial, bar: :string], foo: :bigserial, bar: :string)
     end
 
     test "succeeds when an expected :binary_id field is a uuid" do
       assert :ok = Fieldset.same?([foo: :uuid, bar: :string], foo: :binary_id, bar: :string)
+      assert :ok = Fieldset.same?([foo: :uuid, bar: :string], foo: :uuid, bar: :string)
     end
 
     test "succeeds when an expected :decimal field is a numeric" do

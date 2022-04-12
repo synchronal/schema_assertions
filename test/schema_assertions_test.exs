@@ -51,7 +51,7 @@ defmodule SchemaAssertionsTest do
                    """
                    \n\nExpected fields to match database
                         Added fields:
-                          [id: :bigint]
+                          [id: :bigserial]
                         Missing fields:
                           [id: :id, population: :integer]
                    """,
