@@ -70,9 +70,16 @@ defmodule SchemaAssertions.MixProject do
 
   defp package do
     [
+      files: ~w[
+        .formatter.exs
+        README.*
+        lib
+        license.*
+        mix.exs
+      ],
       licenses: ["MIT"],
+      links: %{"GitHub" => @scm_url},
       maintainers: ["synchronal.dev", "Erik Hanson", "Eric Saxby"],
-      links: %{"GitHub" => @scm_url}
     ]
   end
 
