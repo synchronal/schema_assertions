@@ -1,6 +1,8 @@
 defmodule SchemaAssertions.MixProject do
   use Mix.Project
 
+  @scm_url "https://github.com/synchronal/schema_assertions"
+
   def application do
     [
       extra_applications: [:logger]
@@ -17,7 +19,11 @@ defmodule SchemaAssertions.MixProject do
       docs: docs(),
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
+      homepage_url: @scm_url,
       name: "Schema Assertions",
+      package: package(),
+      preferred_cli_env: [credo: :test],
+      source_url: @scm_url,
       start_permanent: Mix.env() == :prod,
       version: version()
     ]
@@ -61,6 +67,14 @@ defmodule SchemaAssertions.MixProject do
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      maintainers: ["synchronal.dev", "Erik Hanson", "Eric Saxby"],
+      links: %{"GitHub" => @scm_url}
+    ]
+  end
 
   defp version do
     case File.read("VERSION") do
