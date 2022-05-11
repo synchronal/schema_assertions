@@ -79,7 +79,7 @@ defmodule SchemaAssertions.MixProject do
       ],
       licenses: ["MIT"],
       links: %{"GitHub" => @scm_url},
-      maintainers: ["synchronal.dev", "Erik Hanson", "Eric Saxby"],
+      maintainers: ["synchronal.dev", "Erik Hanson", "Eric Saxby"]
     ]
   end
 
