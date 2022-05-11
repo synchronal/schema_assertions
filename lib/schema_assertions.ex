@@ -1,6 +1,19 @@
 defmodule SchemaAssertions do
   @moduledoc """
   ExUnit assertions for Ecto schemas.
+
+  ## Examples
+
+      iex> import SchemaAssertions
+      iex> alias SchemaAssertions.Test.Schema
+      ...>
+      iex> assert_schema Schema.House, "houses",
+      ...>     address: :text,
+      ...>     id: :bigserial
+      ...>
+      iex> assert_schema Schema.House, "houses",
+      ...>     address: :text,
+      ...>     id: :id
   """
 
   import ExUnit.Assertions
