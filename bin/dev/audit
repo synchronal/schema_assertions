@@ -8,3 +8,4 @@ set -x
 mix credo --strict
 mix dialyzer
 mix deps.audit
+set +x
