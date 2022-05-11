@@ -73,6 +73,7 @@ defmodule SchemaAssertions.MixProject do
       files: ~w[
         .formatter.exs
         README.*
+        VERSION
         lib
         license.*
         mix.exs
@@ -84,7 +85,7 @@ defmodule SchemaAssertions.MixProject do
   end
 
   defp version do
-    case File.read("VERSION") do
+    case Path.expand(Path.join([__ENV__.file, "..", "VERSION"])) |> File.read() do
       {:error, _} -> "0.0.0"
       {:ok, version_number} -> version_number |> String.trim()
     end
