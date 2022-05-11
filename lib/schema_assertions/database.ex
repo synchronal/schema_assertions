@@ -7,7 +7,7 @@ defmodule SchemaAssertions.Database do
 
   @doc "Returns a sorted list of all the table names"
   @spec all_table_names() :: [binary()]
-  def all_table_names() do
+  def all_table_names do
     "select table_name from information_schema.tables where table_schema = 'public'"
     |> query()
     |> List.flatten()
@@ -59,7 +59,7 @@ defmodule SchemaAssertions.Database do
   defp query(string, args \\ []),
     do: repo().query!(string, args).rows
 
-  defp repo() do
+  defp repo do
     case Application.get_env(:schema_assertions, :ecto_repos) do
       [repo] ->
         repo

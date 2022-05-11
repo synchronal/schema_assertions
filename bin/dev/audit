@@ -2,5 +2,5 @@
 
 set -exo pipefail
 
-mix credo
+mix credo --strict
 mix dialyzer
