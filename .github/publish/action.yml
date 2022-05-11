@@ -44,7 +44,7 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         name=${{ inputs.name }}
-        version=$(cat "VERSION" | tr '\n' '')
+        version=$(cat "VERSION")
 
         echo "::group::Local version"
         echo "${version}"
