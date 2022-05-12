@@ -12,7 +12,7 @@ by adding `schema_assertions` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:schema_assertions, "~> 1.0.0"}
+    {:schema_assertions, "~> 0.1.3"}
   ]
 end
 ```
