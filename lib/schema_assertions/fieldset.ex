@@ -23,6 +23,8 @@ defmodule SchemaAssertions.Fieldset do
       {key, :binary_id} -> {key, :uuid}
       {key, :decimal} -> {key, :numeric}
       {key, :id} -> {key, :bigserial}
+      {key, :naive_datetime} -> {key, :utc_datetime}
+      {key, :naive_datetime_usec} -> {key, :utc_datetime_usec}
       other -> other
     end)
     |> MapSet.new()

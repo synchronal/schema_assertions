@@ -80,6 +80,9 @@ defmodule SchemaAssertions.Database do
   defp to_field([column_name, "timestamp(0) without time zone"]),
     do: {String.to_atom(column_name), :utc_datetime}
 
+  defp to_field([column_name, "timestamp without time zone"]),
+    do: {String.to_atom(column_name), :utc_datetime_usec}
+
   defp to_field([column_name, column_type]),
     do: {String.to_atom(column_name), String.to_atom(column_type)}
 end

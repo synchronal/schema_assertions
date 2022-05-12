@@ -19,10 +19,13 @@ defmodule SchemaAssertions.DatabaseTest do
 
     test "translates different types of fields" do
       assert Database.fieldset("pets") == [
+               dob: :utc_datetime,
+               dob_usec: :utc_datetime_usec,
                feet_count: :integer,
                friendly: :boolean,
                id: :uuid,
                last_seen_vet: :utc_datetime,
+               last_seen_vet_usec: :utc_datetime_usec,
                nickname: :string,
                teeth_count: :bigint
              ]

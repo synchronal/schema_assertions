@@ -22,6 +22,14 @@ defmodule SchemaAssertions.FieldsetTest do
       assert :ok = Fieldset.same?([foo: :numeric, bar: :string], foo: :decimal, bar: :string)
     end
 
+    test "succeeds when an expected :naive_datetime field is a :utc_datetime" do
+      assert :ok = Fieldset.same?([foo: :naive_datetime], foo: :utc_datetime)
+    end
+
+    test "succeeds when an expected :naive_datetime_usec field is a :utc_datetime_usec" do
+      assert :ok = Fieldset.same?([foo: :naive_datetime_usec], foo: :utc_datetime_usec)
+    end
+
     test "fails when an expected field is not present in the database" do
       assert {:error, [added: [], missing: [bar: :string]]} =
                Fieldset.same?(
