@@ -22,7 +22,7 @@ defmodule SchemaAssertions.MixProject do
       homepage_url: @scm_url,
       name: "Schema Assertions",
       package: package(),
-      preferred_cli_env: [credo: :test],
+      preferred_cli_env: [credo: :test, dialyzer: :test],
       source_url: @scm_url,
       start_permanent: Mix.env() == :prod,
       version: version()
@@ -52,7 +52,7 @@ defmodule SchemaAssertions.MixProject do
 
   defp dialyzer do
     [
-      plt_add_apps: [:ecto, :ex_unit, :mix],
+      plt_add_apps: [:ecto, :ecto_sql, :ex_unit, :mix],
       plt_add_deps: :app_tree,
       plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
     ]
