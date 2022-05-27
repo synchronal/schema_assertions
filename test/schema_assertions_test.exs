@@ -95,6 +95,44 @@ defmodule SchemaAssertionsTest do
                      SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "cars")
                    end
     end
+
+    test "fails when low-precision datetimes are incorrectly compared with high-precision datetimes" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected fields to match database
+                        Added fields:
+                          [dob: :utc_datetime, dob_usec: :utc_datetime_usec, last_seen_vet: :utc_datetime, last_seen_vet_usec: :utc_datetime_usec]
+                        Missing fields:
+                          [dob: :naive_datetime_usec, dob_usec: :naive_datetime, last_seen_vet: :utc_datetime_usec, last_seen_vet_usec: :utc_datetime]
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.Pet, "pets",
+                       id: :uuid,
+                       feet_count: :integer,
+                       friendly: :boolean,
+                       last_seen_vet: :utc_datetime_usec,
+                       last_seen_vet_usec: :utc_datetime,
+                       dob: :naive_datetime_usec,
+                       dob_usec: :naive_datetime,
+                       nickname: :string,
+                       teeth_count: :bigint
+                     )
+                   end
+    end
+
+    test "passes when low-precision datetimes are correctly compared with high-precision datetimes" do
+      SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.Pet, "pets",
+        id: :uuid,
+        feet_count: :integer,
+        friendly: :boolean,
+        last_seen_vet: :utc_datetime,
+        last_seen_vet_usec: :utc_datetime_usec,
+        dob: :naive_datetime,
+        dob_usec: :naive_datetime_usec,
+        nickname: :string,
+        teeth_count: :bigint
+      )
+    end
   end
 
   describe "assert_has_many" do
