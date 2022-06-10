@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## v0.1.4
+
 - make `ChangesetAssertions.errors_on` private because many projects already have such a function,
   causing conflicts when `ChangesetAssertions` is imported
   
