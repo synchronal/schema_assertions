@@ -2,6 +2,9 @@
 
 ## Unreleased changes
 
+- make `ChangesetAssertions.errors_on` private because many projects already have such a function,
+  causing conflicts when `ChangesetAssertions` is imported
+  
 ## v0.1.3
 
 - match `:utc_datetime_usec` in `assert_schema`
