@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## v0.2.0
+
 - add `assert_has_one/3`
 
 ## v0.1.4
