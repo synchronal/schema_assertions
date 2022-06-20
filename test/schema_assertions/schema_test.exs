@@ -1,4 +1,5 @@
 defmodule SchemaAssertions.SchemaTest do
+  # @related [subject](/lib/schema_assertions/schema.ex)
   @moduledoc false
   use ExUnit.Case, async: true
 
@@ -37,6 +38,25 @@ defmodule SchemaAssertions.SchemaTest do
     end
   end
 
+  describe "has_one?" do
+    test "returns :ok when the schema has a has_one relationship" do
+      assert :ok = Schema.has_one?(Test.Schema.House, :foundation, Test.Schema.Foundation)
+    end
+
+    test "returns error when the associated module does not match" do
+      assert {:error, "Found module: Elixir.SchemaAssertions.Test.Schema.Foundation"} =
+               Schema.has_one?(Test.Schema.House, :foundation, Test.Schema.Window)
+    end
+
+    test "returns error when the schema does not have a has_one relationship" do
+      assert {:error, "Association not found"} = Schema.has_one?(Test.Schema.House, :window, Test.Schema.Window)
+    end
+
+    test "returns error when the relationship is has_many" do
+      assert {:error, "Association is has_many"} = Schema.has_one?(Test.Schema.House, :rooms, Test.Schema.Room)
+    end
+  end
+
   describe "has_many?" do
     test "returns :ok when the schema has a has_many relationship" do
       assert :ok = Schema.has_many?(Test.Schema.House, :rooms, Test.Schema.Room)
@@ -56,6 +76,11 @@ defmodule SchemaAssertions.SchemaTest do
                Schema.has_many?(Test.Schema.House, :people, Test.Schema.Person)
     end
 
+    test "returns error when the relationship is has_one" do
+      assert {:error, :has_many, "Association is has_one"} =
+               Schema.has_many?(Test.Schema.House, :foundation, Test.Schema.Foundation)
+    end
+
     test "returns error when the schema does not have a has_many :through relationship" do
       assert {:error, :has_many_through, "Association not found"} =
                Schema.has_many?(Test.Schema.House, :people, through: [:rooms, :people])
@@ -64,6 +89,11 @@ defmodule SchemaAssertions.SchemaTest do
     test "returns error when the :through relationship does not match" do
       assert {:error, :has_many_through, "Found: [:rooms, :windows]"} =
                Schema.has_many?(Test.Schema.House, :windows, through: [:rooms, :people])
+    end
+
+    test "returns error when the :through relationship is has_one" do
+      assert {:error, :has_many_through, "Association is has_one"} =
+               Schema.has_many?(Test.Schema.House, :foundation, through: [:rooms, :people])
     end
   end
 

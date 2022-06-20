@@ -1,4 +1,5 @@
 defmodule SchemaAssertions do
+  # @related [test](/test/schema_assertions_test.exs)
   @moduledoc """
   ExUnit assertions for Ecto schemas.
 
@@ -55,7 +56,7 @@ defmodule SchemaAssertions do
   @doc """
   Asserts that the given schema module exists and that its corresponding database table exists.
   """
-  @spec assert_schema(module(), binary(), Keyword.t()) :: true
+  @spec assert_schema(module(), binary(), Keyword.t()) :: true | no_return()
   def assert_schema(schema_module, table_name, fields \\ []) do
     assert_schema_module_exists(schema_module)
     assert_is_ecto_schema(schema_module)
@@ -64,6 +65,37 @@ defmodule SchemaAssertions do
     assert_fields(schema_module, fields)
 
     true
+  end
+
+  @doc """
+  Asserts that the given schema module has a has_one association.
+
+  ## Example
+
+      iex> alias SchemaAssertions.Test.Schema
+      iex> SchemaAssertions.assert_has_one(Schema.House, :foundation, Schema.Foundation)
+      true
+  """
+  @spec assert_has_one(module(), atom(), module()) :: true | no_return()
+  def assert_has_one(schema_module, association, association_module) do
+    case Schema.has_one?(schema_module, association, association_module) do
+      :ok ->
+        true
+
+      {:error, error} ->
+        flunk(
+          to_string([
+            "Expected ",
+            inspect(schema_module),
+            " to have one\n  ",
+            inspect(association),
+            "\nto\n  ",
+            inspect(association_module),
+            "\n\n",
+            error
+          ])
+        )
+    end
   end
 
   @doc """

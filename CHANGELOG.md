@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+- add `assert_has_one/3`
+
 ## v0.1.4
 
 - make `ChangesetAssertions.errors_on` private because many projects already have such a function,

@@ -1,4 +1,5 @@
 defmodule SchemaAssertionsTest do
+  # @related [subject](/lib/schema_assertions.ex)
   @moduledoc false
   use ExUnit.Case, async: true
   alias SchemaAssertions.Test.Schema
@@ -132,6 +133,44 @@ defmodule SchemaAssertionsTest do
         nickname: :string,
         teeth_count: :bigint
       )
+    end
+  end
+
+  describe "assert_has_one" do
+    alias SchemaAssertions.Test.Schema.House
+
+    test("succeeds when the schema has a relationship according the function args") do
+      SchemaAssertions.assert_has_one(House, :foundation, SchemaAssertions.Test.Schema.Foundation)
+    end
+
+    test "fails when no association exists" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.House to have one
+                          :window
+                        to
+                          SchemaAssertions.Test.Schema.Window
+                        
+                        Association not found
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_has_one(House, :window, SchemaAssertions.Test.Schema.Window)
+                   end
+    end
+
+    test "fails when association module does not match" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.House to have one
+                          :foundation
+                        to
+                          SchemaAssertions.Test.Schema.Window
+                        
+                        Found module: Elixir.SchemaAssertions.Test.Schema.Foundation
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_has_one(House, :foundation, SchemaAssertions.Test.Schema.Window)
+                   end
     end
   end
 
