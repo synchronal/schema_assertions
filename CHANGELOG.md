@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## v0.2.1
+
 - `SchemaAssertions.assert_belongs_to/3` verifies that the column exists in the table.
 
 ## v0.2.0
