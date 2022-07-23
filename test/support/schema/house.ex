@@ -10,3 +10,14 @@ defmodule SchemaAssertions.Test.Schema.House do
     has_many :windows, through: [:rooms, :windows]
   end
 end
+
+defmodule SchemaAssertions.Test.Schema.HouseBadAssoc do
+  @moduledoc false
+  use Ecto.Schema
+
+  schema "houses" do
+    field :address, :string
+
+    belongs_to :foundation, SchemaAssertions.Test.Schema.Foundation
+  end
+end

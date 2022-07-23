@@ -6,8 +6,12 @@ defmodule SchemaAssertions.Schema do
   @spec belongs_to?(module(), atom(), module()) :: :ok | {:error, String.t()}
   def belongs_to?(module, assoc_name, assoc_module) do
     case module.__schema__(:association, assoc_name) do
-      %Ecto.Association.BelongsTo{queryable: ^assoc_module} ->
-        :ok
+      %Ecto.Association.BelongsTo{queryable: ^assoc_module, owner_key: owner_key} ->
+        fieldset = module.__schema__(:source) |> SchemaAssertions.Database.fieldset()
+
+        if Keyword.has_key?(fieldset, owner_key),
+          do: :ok,
+          else: {:error, "#{owner_key} does not exist in table"}
 
       %Ecto.Association.BelongsTo{queryable: queryable} ->
         {:error, "Found module: #{queryable}"}

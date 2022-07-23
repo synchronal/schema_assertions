@@ -26,7 +26,7 @@ defmodule SchemaAssertionsTest do
                    end
     end
 
-    test "fails when through association does not match" do
+    test "fails when association module does not match" do
       assert_raise ExUnit.AssertionError,
                    """
                    \n\nExpected SchemaAssertions.Test.Schema.Room to belong to
@@ -38,6 +38,36 @@ defmodule SchemaAssertionsTest do
                    """,
                    fn ->
                      SchemaAssertions.assert_belongs_to(Schema.Room, :house, Schema.Window)
+                   end
+    end
+
+    test "fails when association name does not match" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.Room to belong to
+                          :window
+                        via
+                          SchemaAssertions.Test.Schema.House
+                        
+                        Association not found
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_belongs_to(Schema.Room, :window, Schema.House)
+                   end
+    end
+
+    test "fails when column does not exist in the database" do
+      assert_raise ExUnit.AssertionError,
+                   """
+                   \n\nExpected SchemaAssertions.Test.Schema.HouseBadAssoc to belong to
+                          :foundation
+                        via
+                          SchemaAssertions.Test.Schema.Foundation
+                        
+                        foundation_id does not exist in table
+                   """,
+                   fn ->
+                     SchemaAssertions.assert_belongs_to(Schema.HouseBadAssoc, :foundation, Schema.Foundation)
                    end
     end
   end
@@ -83,7 +113,7 @@ defmodule SchemaAssertionsTest do
 
     test "fails when the table does not exist" do
       assert_raise ExUnit.AssertionError,
-                   ~s|\n\nDatabase table "non_existent_table_name" not found in ["cars", "houses", "pets", "schema_migrations"]\n|,
+                   ~s|\n\nDatabase table "non_existent_table_name" not found in ["cars", "houses", "pets", "rooms", "schema_migrations"]\n|,
                    fn ->
                      SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "non_existent_table_name")
                    end
