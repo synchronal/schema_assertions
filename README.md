@@ -21,6 +21,10 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/schema_assertions](https://hexdocs.pm/schema_assertions).
 
+## Other useful schema-related libraries
+
+* [excellent_migrations](https://hexdocs.pm/excellent_migrations/readme.html)
+
 ## License
 
 This code is available under the Apache 2.0 license. See also [license](./license.txt).
