@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+- formatter doesn't put parens around `assert_belongs_to`, `assert_has_many` and `assert_has_one`
+
 ## v0.2.1
 
 - `SchemaAssertions.assert_belongs_to/3` verifies that the column exists in the table.
