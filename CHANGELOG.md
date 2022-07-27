@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## v0.2.2
+
 - formatter doesn't put parens around `assert_belongs_to`, `assert_has_many` and `assert_has_one`
 
 ## v0.2.1
