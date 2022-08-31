@@ -74,15 +74,17 @@ defmodule SchemaAssertions.Database do
     end
   end
 
-  defp to_field([column_name, "character varying" <> _]),
-    do: {String.to_atom(column_name), :string}
+  defp to_field([column_name, data_type]) do
+    field_type =
+      if String.ends_with?(data_type, "[]"),
+        do: {:array, to_field(String.trim_trailing(data_type, "[]"))},
+        else: to_field(data_type)
 
-  defp to_field([column_name, "timestamp(0) without time zone"]),
-    do: {String.to_atom(column_name), :utc_datetime}
+    {String.to_atom(column_name), field_type}
+  end
 
-  defp to_field([column_name, "timestamp without time zone"]),
-    do: {String.to_atom(column_name), :utc_datetime_usec}
-
-  defp to_field([column_name, column_type]),
-    do: {String.to_atom(column_name), String.to_atom(column_type)}
+  defp to_field("character varying" <> _), do: :string
+  defp to_field("timestamp(0) without time zone"), do: :utc_datetime
+  defp to_field("timestamp without time zone"), do: :utc_datetime_usec
+  defp to_field(column_type), do: String.to_atom(column_type)
 end

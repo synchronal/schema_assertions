@@ -132,7 +132,7 @@ defmodule SchemaAssertionsTest do
                    """
                    \n\nExpected fields to match database
                         Added fields:
-                          [dob: :utc_datetime, dob_usec: :utc_datetime_usec, last_seen_vet: :utc_datetime, last_seen_vet_usec: :utc_datetime_usec]
+                          [dob: :utc_datetime, dob_usec: :utc_datetime_usec, favorite_numbers: {:array, :integer}, last_seen_vet: :utc_datetime, last_seen_vet_usec: :utc_datetime_usec, toys: {:array, :string}]
                         Missing fields:
                           [dob: :naive_datetime_usec, dob_usec: :naive_datetime, last_seen_vet: :utc_datetime_usec, last_seen_vet_usec: :utc_datetime]
                    """,
@@ -154,6 +154,7 @@ defmodule SchemaAssertionsTest do
     test "passes when low-precision datetimes are correctly compared with high-precision datetimes" do
       SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.Pet, "pets",
         id: :uuid,
+        favorite_numbers: {:array, :integer},
         feet_count: :integer,
         friendly: :boolean,
         last_seen_vet: :utc_datetime,
@@ -161,7 +162,8 @@ defmodule SchemaAssertionsTest do
         dob: :naive_datetime,
         dob_usec: :naive_datetime_usec,
         nickname: :string,
-        teeth_count: :bigint
+        teeth_count: :bigint,
+        toys: {:array, :string}
       )
     end
   end

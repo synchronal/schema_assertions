@@ -12,6 +12,8 @@ defmodule SchemaAssertions.Test.Repo.Migrations.AddPets do
       add :dob_usec, :naive_datetime_usec
       add :nickname, :string
       add :teeth_count, :bigint
+      add :toys, {:array, :string}
+      add :favorite_numbers, {:array, :integer}
     end
   end
 end

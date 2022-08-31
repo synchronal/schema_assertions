@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+- Handle array fields in `assert_schema`.
+
 ## v0.2.2
 
 - formatter doesn't put parens around `assert_belongs_to`, `assert_has_many` and `assert_has_one`
