@@ -72,27 +72,30 @@ defmodule SchemaAssertionsTest do
     end
   end
 
+  def strip_ansi(ansi_string) when is_binary(ansi_string) do
+    String.replace(ansi_string, ~r/\e\[\d+m/, "")
+  end
+
   describe "assert_schema" do
     test "succeeds when the schema is valid according to the function args" do
       SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "houses", address: :text, id: :id)
     end
 
     test "fails when an expected field does not exist in the database" do
-      assert_raise ExUnit.AssertionError,
-                   """
-                   \n\nExpected fields to match database
-                        Added fields:
-                          [id: :bigserial]
-                        Missing fields:
-                          [id: :id, population: :integer]
-                   """,
-                   fn ->
-                     SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "houses",
-                       address: :text,
-                       id: :id,
-                       population: :integer
-                     )
-                   end
+      error =
+        assert_raise ExUnit.AssertionError,
+                     fn ->
+                       SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "houses",
+                         address: :text,
+                         id: :id,
+                         population: :integer
+                       )
+                     end
+
+      msg = Exception.message(error)
+
+      assert msg |> strip_ansi() ==
+               "\n\nExpected fields to match database\n     \n     Expected:\n       [\n         address: :text\n         id: :id\n         population: :integer\n       ]\n     \n     Actual:\n       [\n         address: :text\n         id: :bigserial\n       ]\n"
     end
 
     test "fails when the schema module does not exist" do
@@ -128,27 +131,26 @@ defmodule SchemaAssertionsTest do
     end
 
     test "fails when low-precision datetimes are incorrectly compared with high-precision datetimes" do
-      assert_raise ExUnit.AssertionError,
-                   """
-                   \n\nExpected fields to match database
-                        Added fields:
-                          [dob: :utc_datetime, dob_usec: :utc_datetime_usec, favorite_numbers: {:array, :integer}, last_seen_vet: :utc_datetime, last_seen_vet_usec: :utc_datetime_usec, toys: {:array, :string}]
-                        Missing fields:
-                          [dob: :naive_datetime_usec, dob_usec: :naive_datetime, last_seen_vet: :utc_datetime_usec, last_seen_vet_usec: :utc_datetime]
-                   """,
-                   fn ->
-                     SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.Pet, "pets",
-                       id: :uuid,
-                       feet_count: :integer,
-                       friendly: :boolean,
-                       last_seen_vet: :utc_datetime_usec,
-                       last_seen_vet_usec: :utc_datetime,
-                       dob: :naive_datetime_usec,
-                       dob_usec: :naive_datetime,
-                       nickname: :string,
-                       teeth_count: :bigint
-                     )
-                   end
+      error =
+        assert_raise ExUnit.AssertionError,
+                     fn ->
+                       SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.Pet, "pets",
+                         id: :uuid,
+                         feet_count: :integer,
+                         friendly: :boolean,
+                         last_seen_vet: :utc_datetime_usec,
+                         last_seen_vet_usec: :utc_datetime,
+                         dob: :naive_datetime_usec,
+                         dob_usec: :naive_datetime,
+                         nickname: :string,
+                         teeth_count: :bigint
+                       )
+                     end
+
+      msg = Exception.message(error)
+
+      assert msg |> strip_ansi() ==
+               "\n\nExpected fields to match database\n     \n     Expected:\n       [\n         dob: :naive_datetime_usec\n         dob_usec: :naive_datetime\n         feet_count: :integer\n         friendly: :boolean\n         id: :uuid\n         last_seen_vet: :utc_datetime_usec\n         last_seen_vet_usec: :utc_datetime\n         nickname: :string\n         teeth_count: :bigint\n       ]\n     \n     Actual:\n       [\n         dob: :utc_datetime\n         dob_usec: :utc_datetime_usec\n         favorite_numbers: {:array, :integer}\n         feet_count: :integer\n         friendly: :boolean\n         id: :uuid\n         last_seen_vet: :utc_datetime\n         last_seen_vet_usec: :utc_datetime_usec\n         nickname: :string\n         teeth_count: :bigint\n         toys: {:array, :string}\n       ]\n"
     end
 
     test "passes when low-precision datetimes are correctly compared with high-precision datetimes" do

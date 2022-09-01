@@ -2,6 +2,7 @@
 
 ## Unreleased changes
 
+- Update `assert_schema` failure message to show expected/actual, highlighting differences.
 - Handle array fields in `assert_schema`.
 
 ## v0.2.2

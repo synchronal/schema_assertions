@@ -150,9 +150,12 @@ defmodule SchemaAssertions do
   # # #
 
   def assert_fields(schema_module, fields) do
-    schema_module
-    |> Schema.table_name()
-    |> Database.fieldset()
+    fieldset =
+      schema_module
+      |> Schema.table_name()
+      |> Database.fieldset()
+
+    fieldset
     |> Fieldset.same?(fields)
     |> case do
       :ok ->
@@ -160,13 +163,17 @@ defmodule SchemaAssertions do
 
       {:error, [added: added, missing: missing]} ->
         flunk(
-          to_string([
-            "Expected fields to match database\n",
-            "Added fields:\n  ",
-            inspect(added),
-            "\nMissing fields:\n  ",
-            inspect(missing)
-          ])
+          to_string(
+            IO.ANSI.format([
+              "Expected fields to match database",
+              :cyan,
+              "\n\nExpected:\n",
+              format_list_for_exception(fields, missing),
+              :cyan,
+              "\n\nActual:\n",
+              format_list_for_exception(fieldset, added)
+            ])
+          )
         )
     end
   end
@@ -198,5 +205,18 @@ defmodule SchemaAssertions do
              " but was ",
              inspect(table_name)
            ])
+  end
+
+  defp format_list_for_exception(list, mismatched) do
+    list
+    |> Enum.sort_by(fn {k, _v} -> k end)
+    |> Enum.reduce(["  [\n", :reset], fn {field, type}, acc ->
+      acc = if Keyword.has_key?(mismatched, field), do: [:red | acc], else: acc
+      [:reset, "    #{field}: #{inspect(type)}\n" | acc]
+    end)
+    |> Enum.reverse()
+    |> IO.ANSI.format()
+    |> to_string()
+    |> Kernel.<>("  ]")
   end
 end
