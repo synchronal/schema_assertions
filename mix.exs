@@ -45,7 +45,7 @@ defmodule SchemaAssertions.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:ecto_sql, "~> 3.0", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:mix_audit, "~> 1.0", only: :dev, runtime: false},
+      {:mix_audit, "~> 2.0", only: :dev, runtime: false},
       {:postgrex, ">= 0.0.0", only: :test}
     ]
   end
