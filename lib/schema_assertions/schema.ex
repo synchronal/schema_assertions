@@ -28,20 +28,26 @@ defmodule SchemaAssertions.Schema do
   end
 
   @doc "Returns :ok if the schema has a has_one relationship"
-  @spec has_one?(module(), atom(), module()) :: :ok | {:error, String.t()}
-  def has_one?(module, assoc_name, assoc_module) do
-    case module.__schema__(:association, assoc_name) do
-      %Ecto.Association.Has{cardinality: :one, queryable: ^assoc_module} ->
-        :ok
+  @spec has_one?(module(), atom(), module() | Keyword.t()) :: :ok | {:error, atom(), String.t()}
+  def has_one?(module, assoc_name, assoc_module_or_options) do
+    case assoc_module_or_options do
+      through: through ->
+        has_one_through?(module, assoc_name, through)
 
-      %Ecto.Association.Has{cardinality: :many, queryable: ^assoc_module} ->
-        {:error, "Association is has_many"}
+      _ ->
+        case module.__schema__(:association, assoc_name) do
+          %Ecto.Association.Has{cardinality: :one, queryable: ^assoc_module_or_options} ->
+            :ok
 
-      %Ecto.Association.Has{queryable: queryable} ->
-        {:error, "Found module: #{queryable}"}
+          %Ecto.Association.Has{cardinality: :many, queryable: ^assoc_module_or_options} ->
+            {:error, :has_one, "Association is has_many"}
 
-      _other ->
-        {:error, "Association not found"}
+          %Ecto.Association.Has{queryable: queryable} ->
+            {:error, :has_one, "Found module: #{queryable}"}
+
+          _other ->
+            {:error, :has_one, "Association not found"}
+        end
     end
   end
 
@@ -86,9 +92,20 @@ defmodule SchemaAssertions.Schema do
   defp has_many_through?(module, assoc_name, through) do
     case module.__schema__(:association, assoc_name) do
       %Ecto.Association.Has{cardinality: :one} -> {:error, :has_many_through, "Association is has_one"}
+      %Ecto.Association.HasThrough{cardinality: :one} -> {:error, :has_many_through, "Association is has_one"}
       %Ecto.Association.HasThrough{cardinality: :many, through: ^through} -> :ok
       %Ecto.Association.HasThrough{through: actual} -> {:error, :has_many_through, "Found: #{inspect(actual)}"}
       _other -> {:error, :has_many_through, "Association not found"}
+    end
+  end
+
+  defp has_one_through?(module, assoc_name, through) do
+    case module.__schema__(:association, assoc_name) do
+      %Ecto.Association.Has{cardinality: :many} -> {:error, :has_one_through, "Association is has_many"}
+      %Ecto.Association.HasThrough{cardinality: :many} -> {:error, :has_one_through, "Association is has_many"}
+      %Ecto.Association.HasThrough{cardinality: :one, through: ^through} -> :ok
+      %Ecto.Association.HasThrough{through: actual} -> {:error, :has_one_through, "Found: #{inspect(actual)}"}
+      _other -> {:error, :has_one_through, "Association not found"}
     end
   end
 end

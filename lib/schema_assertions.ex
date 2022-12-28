@@ -77,12 +77,12 @@ defmodule SchemaAssertions do
       true
   """
   @spec assert_has_one(module(), atom(), module()) :: true | no_return()
-  def assert_has_one(schema_module, association, association_module) do
-    case Schema.has_one?(schema_module, association, association_module) do
+  def assert_has_one(schema_module, association, association_module_or_opts) do
+    case Schema.has_one?(schema_module, association, association_module_or_opts) do
       :ok ->
         true
 
-      {:error, error} ->
+      {:error, :has_one, error} ->
         flunk(
           to_string([
             "Expected ",
@@ -90,7 +90,21 @@ defmodule SchemaAssertions do
             " to have one\n  ",
             inspect(association),
             "\nto\n  ",
-            inspect(association_module),
+            inspect(association_module_or_opts),
+            "\n\n",
+            error
+          ])
+        )
+
+      {:error, :has_one_through, error} ->
+        flunk(
+          to_string([
+            "Expected ",
+            inspect(schema_module),
+            " to have one\n  ",
+            inspect(association),
+            "\n\n",
+            inspect(association_module_or_opts),
             "\n\n",
             error
           ])

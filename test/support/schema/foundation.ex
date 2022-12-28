@@ -4,5 +4,6 @@ defmodule SchemaAssertions.Test.Schema.Foundation do
 
   schema "foundations" do
     belongs_to :house, SchemaAssertions.Test.Schema.House
+    belongs_to :foundation_type, SchemaAssertions.Test.Schema.FoundationType
   end
 end
