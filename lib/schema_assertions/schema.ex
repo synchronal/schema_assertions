@@ -92,6 +92,7 @@ defmodule SchemaAssertions.Schema do
   defp has_many_through?(module, assoc_name, through) do
     case module.__schema__(:association, assoc_name) do
       %Ecto.Association.Has{cardinality: :one} -> {:error, :has_many_through, "Association is has_one"}
+      %Ecto.Association.HasThrough{cardinality: :one} -> {:error, :has_many_through, "Association is has_one"}
       %Ecto.Association.HasThrough{cardinality: :many, through: ^through} -> :ok
       %Ecto.Association.HasThrough{through: actual} -> {:error, :has_many_through, "Found: #{inspect(actual)}"}
       _other -> {:error, :has_many_through, "Association not found"}

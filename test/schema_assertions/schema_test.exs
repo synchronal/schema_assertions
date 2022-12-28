@@ -117,7 +117,12 @@ defmodule SchemaAssertions.SchemaTest do
                Schema.has_many?(Test.Schema.House, :windows, through: [:rooms, :people])
     end
 
-    test "returns error when the :through relationship is has_one" do
+    test "returns error when the :through relationship is has_one :through" do
+      assert {:error, :has_many_through, "Association is has_one"} =
+               Schema.has_many?(Test.Schema.House, :foundation_type, through: [:foundation, :foundation_type])
+    end
+
+    test "returns error when the :through relationship is has_one (bare)" do
       assert {:error, :has_many_through, "Association is has_one"} =
                Schema.has_many?(Test.Schema.House, :foundation, through: [:rooms, :people])
     end
