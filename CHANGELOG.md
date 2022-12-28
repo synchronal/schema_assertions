@@ -2,6 +2,10 @@
 
 ## Unreleased changes
 
+## v0.4.0
+
+- `assert_has_one` can assert on `:through` relationships. Thanks Chet!
+
 ## v0.3.0
 
 - Update `assert_schema` failure message to show expected/actual, highlighting differences.
