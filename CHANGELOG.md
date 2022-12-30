@@ -2,6 +2,11 @@
 
 ## Unreleased changes
 
+- Depend explicity on `:ecto`. When previously used in projects that imported `:ecto_sql`,
+  the compiler would use the `optional` dependency to ensure that Ecto was compiled prior
+  to SchemaAssertions. It doesn't make sense to ever install this library without `:ecto`
+  though it may be useful to use on changesets that are not backed by `:ecto_sql`.
+
 ## v0.4.0
 
 - `assert_has_one` can assert on `:through` relationships. Thanks Chet!
