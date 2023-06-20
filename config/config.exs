@@ -3,7 +3,7 @@
 import Config
 
 if Mix.env() == :test do
-  config :logger, level: :warn, metadata: :all
+  config :logger, level: :warning, metadata: :all
 
   config :schema_assertions, ecto_repos: [SchemaAssertions.Test.Repo]
 
