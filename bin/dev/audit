@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
 
+source ".medic/_support/doctor.sh"
+
 set -eo pipefail
 
 mix docs 2>&1 | grep 'warning:' && exit 1
 
-set -x
-mix credo --strict
-mix dialyzer
-mix deps.audit
-set +x
+step "mix: creado" \
+  "mix credo --strict"
+
+step "mix: dialyzer" \
+  "mix dialyzer"
+
+step "mix: audit" \
+  "mix deps.audit"
+
+check "mix: unused deps" \
+  "mix deps.unlock --check-unused" \
+  "mix deps.unlock --unused --clean"
+
