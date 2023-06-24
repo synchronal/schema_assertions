@@ -6,6 +6,8 @@ set -eo pipefail
 
 mix docs 2>&1 | grep 'warning:' && exit 1
 
+bin/dev/validate-related-annotations --e ex --e exs --d lib --d test
+
 step "mix: creado" \
   "mix credo --strict"
 
