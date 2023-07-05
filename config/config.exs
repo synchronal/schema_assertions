@@ -13,7 +13,7 @@ if Mix.env() == :test do
     password: "postgres",
     pool_size: 16,
     pool: Ecto.Adapters.SQL.Sandbox,
-    port: 5432,
+    port: String.to_integer(System.get_env("PGPORT", "5432")),
     queue_interval: 5000,
     queue_target: 300,
     username: "postgres"
