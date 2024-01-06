@@ -2,6 +2,13 @@
 
 ## Unreleased changes
 
+## v0.4.2
+
+- Update deps.
+- Tests run against Elixir 1.16.
+
+## v0.4.1
+
 - Depend explicity on `:ecto`. When previously used in projects that imported `:ecto_sql`,
   the compiler would use the `optional` dependency to ensure that Ecto was compiled prior
   to SchemaAssertions. It doesn't make sense to ever install this library without `:ecto`
