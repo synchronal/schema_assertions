@@ -6,6 +6,8 @@ defmodule SchemaAssertionsTest do
 
   doctest SchemaAssertions
 
+  @moduletag :only_latest
+
   describe "assert_belongs_to" do
     test "succeeds when the schema has a relationship according the function args" do
       SchemaAssertions.assert_belongs_to(Schema.Room, :house, Schema.House)
@@ -18,7 +20,7 @@ defmodule SchemaAssertionsTest do
                           :window
                         via
                           SchemaAssertions.Test.Schema.Window
-                        
+
                         Association not found
                    """,
                    fn ->
@@ -33,7 +35,7 @@ defmodule SchemaAssertionsTest do
                           :house
                         via
                           SchemaAssertions.Test.Schema.Window
-                        
+
                         Found module: Elixir.SchemaAssertions.Test.Schema.House
                    """,
                    fn ->
@@ -48,7 +50,7 @@ defmodule SchemaAssertionsTest do
                           :window
                         via
                           SchemaAssertions.Test.Schema.House
-                        
+
                         Association not found
                    """,
                    fn ->
@@ -63,7 +65,7 @@ defmodule SchemaAssertionsTest do
                           :foundation
                         via
                           SchemaAssertions.Test.Schema.Foundation
-                        
+
                         foundation_id does not exist in table
                    """,
                    fn ->
@@ -95,7 +97,7 @@ defmodule SchemaAssertionsTest do
       msg = Exception.message(error)
 
       assert msg |> strip_ansi() ==
-               "\n\nExpected fields to match database\n     \n     Expected:\n       [\n         address: :text\n         id: :id\n         population: :integer\n       ]\n     \n     Actual:\n       [\n         address: :text\n         id: :bigserial\n       ]\n"
+               "\n\nExpected fields to match database\n\n     Expected:\n       [\n         address: :text\n         id: :id\n         population: :integer\n       ]\n\n     Actual:\n       [\n         address: :text\n         id: :bigserial\n       ]\n"
     end
 
     test "fails when the schema module does not exist" do
@@ -150,7 +152,7 @@ defmodule SchemaAssertionsTest do
       msg = Exception.message(error)
 
       assert msg |> strip_ansi() ==
-               "\n\nExpected fields to match database\n     \n     Expected:\n       [\n         dob: :naive_datetime_usec\n         dob_usec: :naive_datetime\n         feet_count: :integer\n         friendly: :boolean\n         id: :uuid\n         last_seen_vet: :utc_datetime_usec\n         last_seen_vet_usec: :utc_datetime\n         nickname: :string\n         teeth_count: :bigint\n       ]\n     \n     Actual:\n       [\n         dob: :utc_datetime\n         dob_usec: :utc_datetime_usec\n         favorite_numbers: {:array, :integer}\n         feet_count: :integer\n         friendly: :boolean\n         id: :uuid\n         last_seen_vet: :utc_datetime\n         last_seen_vet_usec: :utc_datetime_usec\n         nickname: :string\n         teeth_count: :bigint\n         toys: {:array, :string}\n       ]\n"
+               "\n\nExpected fields to match database\n\n     Expected:\n       [\n         dob: :naive_datetime_usec\n         dob_usec: :naive_datetime\n         feet_count: :integer\n         friendly: :boolean\n         id: :uuid\n         last_seen_vet: :utc_datetime_usec\n         last_seen_vet_usec: :utc_datetime\n         nickname: :string\n         teeth_count: :bigint\n       ]\n\n     Actual:\n       [\n         dob: :utc_datetime\n         dob_usec: :utc_datetime_usec\n         favorite_numbers: {:array, :integer}\n         feet_count: :integer\n         friendly: :boolean\n         id: :uuid\n         last_seen_vet: :utc_datetime\n         last_seen_vet_usec: :utc_datetime_usec\n         nickname: :string\n         teeth_count: :bigint\n         toys: {:array, :string}\n       ]\n"
     end
 
     test "passes when low-precision datetimes are correctly compared with high-precision datetimes" do
@@ -184,7 +186,7 @@ defmodule SchemaAssertionsTest do
                           :window
                         to
                           SchemaAssertions.Test.Schema.Window
-                        
+
                         Association not found
                    """,
                    fn ->
@@ -199,7 +201,7 @@ defmodule SchemaAssertionsTest do
                           :foundation
                         to
                           SchemaAssertions.Test.Schema.Window
-                        
+
                         Found module: Elixir.SchemaAssertions.Test.Schema.Foundation
                    """,
                    fn ->
@@ -223,7 +225,7 @@ defmodule SchemaAssertionsTest do
                           :people
                         to
                           SchemaAssertions.Test.Schema.Person
-                        
+
                         Association not found
                    """,
                    fn ->
@@ -238,7 +240,7 @@ defmodule SchemaAssertionsTest do
                           :rooms
                         to
                           SchemaAssertions.Test.Schema.Window
-                        
+
                         Found module: Elixir.SchemaAssertions.Test.Schema.Room
                    """,
                    fn ->
@@ -251,9 +253,9 @@ defmodule SchemaAssertionsTest do
                    """
                    \n\nExpected SchemaAssertions.Test.Schema.House to have many
                           :people
-                        
+
                         [through: [:rooms, :people]]
-                        
+
                         Association not found
                    """,
                    fn ->
@@ -266,9 +268,9 @@ defmodule SchemaAssertionsTest do
                    """
                    \n\nExpected SchemaAssertions.Test.Schema.House to have many
                           :windows
-                        
+
                         [through: [:rooms, :people]]
-                        
+
                         Found: [:rooms, :windows]
                    """,
                    fn ->
