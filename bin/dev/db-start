@@ -13,15 +13,15 @@ source ".medic/_support/check.sh"
 
 set -e
 
-if eval "asdf plugin-list | grep postgres > /dev/null 2>&1"; then
+if eval "which postgres > /dev/null 2>&1"; then
   pgdir="$(pwd)/priv/postgres"
-  postgres_path="$(asdf where postgres)"
+  postgres_bin="$(realpath "$(which postgres)/..")"
   log_path="${pgdir}/logfile"
   datadir="${pgdir}/data"
   pgport=${PGPORT:-5432}
-  mkdir -p ${datadir}
+  mkdir -p "${datadir}"
 else
-  cecho --yellow "${0}:" --bright-bold-red "asdf postgres plugin not found"
+  cecho --yellow "${0}:" --bright-bold-red "postgres not found"
   exit 1
 fi
 
@@ -32,5 +32,5 @@ if [[ ! -f ${datadir}/PG_VERSION ]]; then
   exit 1
 fi
 
-step "Starting postgres" "${postgres_path}/bin/pg_ctl -D ${datadir} -l ${log_path} -o '-p ${pgport}' start"
+step_with_output "Starting postgres" "${postgres_bin}/pg_ctl -D ${datadir} -l ${log_path} -o '-p ${pgport}' start"
 echo ""
