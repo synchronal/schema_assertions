@@ -3,15 +3,24 @@ defmodule SchemaAssertions.Schema do
   @moduledoc "Ecto schema introspection"
 
   @doc "Returns true if the given module has a belongs_to relationship"
-  @spec belongs_to?(module(), atom(), module()) :: :ok | {:error, String.t()}
-  def belongs_to?(module, assoc_name, assoc_module) do
+  @spec belongs_to?(module(), atom(), module(), Keyword.t()) :: :ok | {:error, String.t()}
+  def belongs_to?(module, assoc_name, assoc_module, opts \\ []) do
     case module.__schema__(:association, assoc_name) do
       %Ecto.Association.BelongsTo{queryable: ^assoc_module, owner_key: owner_key} ->
         fieldset = module.__schema__(:source) |> SchemaAssertions.Database.fieldset()
+        maybe_alias = module.__schema__(:field_source, owner_key)
+        maybe_source = Keyword.get(opts, :source)
 
-        if Keyword.has_key?(fieldset, owner_key),
-          do: :ok,
-          else: {:error, "#{owner_key} does not exist in table"}
+        cond do
+          Keyword.has_key?(fieldset, owner_key) ->
+            :ok
+
+          maybe_alias == maybe_source && Keyword.has_key?(fieldset, maybe_alias) ->
+            :ok
+
+          true ->
+            {:error, "#{owner_key} does not exist in table"}
+        end
 
       %Ecto.Association.BelongsTo{queryable: queryable} ->
         {:error, "Found module: #{queryable}"}

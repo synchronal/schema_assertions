@@ -145,14 +145,15 @@ defmodule SchemaAssertionsTest do
                          dob: :naive_datetime_usec,
                          dob_usec: :naive_datetime,
                          nickname: :string,
-                         teeth_count: :bigint
+                         teeth_count: :bigint,
+                         house_id: :bigint
                        )
                      end
 
       msg = Exception.message(error)
 
       assert msg |> strip_ansi() ==
-               "\n\nExpected fields to match database\n\n     Expected:\n       [\n         dob: :naive_datetime_usec\n         dob_usec: :naive_datetime\n         feet_count: :integer\n         friendly: :boolean\n         id: :uuid\n         last_seen_vet: :utc_datetime_usec\n         last_seen_vet_usec: :utc_datetime\n         nickname: :string\n         teeth_count: :bigint\n       ]\n\n     Actual:\n       [\n         dob: :utc_datetime\n         dob_usec: :utc_datetime_usec\n         favorite_numbers: {:array, :integer}\n         feet_count: :integer\n         friendly: :boolean\n         id: :uuid\n         last_seen_vet: :utc_datetime\n         last_seen_vet_usec: :utc_datetime_usec\n         nickname: :string\n         teeth_count: :bigint\n         toys: {:array, :string}\n       ]\n"
+               "\n\nExpected fields to match database\n\n     Expected:\n       [\n         dob: :naive_datetime_usec\n         dob_usec: :naive_datetime\n         feet_count: :integer\n         friendly: :boolean\n         house_id: :bigint\n         id: :uuid\n         last_seen_vet: :utc_datetime_usec\n         last_seen_vet_usec: :utc_datetime\n         nickname: :string\n         teeth_count: :bigint\n       ]\n\n     Actual:\n       [\n         dob: :utc_datetime\n         dob_usec: :utc_datetime_usec\n         favorite_numbers: {:array, :integer}\n         feet_count: :integer\n         friendly: :boolean\n         house_id: :bigint\n         id: :uuid\n         last_seen_vet: :utc_datetime\n         last_seen_vet_usec: :utc_datetime_usec\n         nickname: :string\n         teeth_count: :bigint\n         toys: {:array, :string}\n       ]\n"
     end
 
     test "passes when low-precision datetimes are correctly compared with high-precision datetimes" do
@@ -167,7 +168,8 @@ defmodule SchemaAssertionsTest do
         dob_usec: :naive_datetime_usec,
         nickname: :string,
         teeth_count: :bigint,
-        toys: {:array, :string}
+        toys: {:array, :string},
+        house_id: :bigint
       )
     end
   end

@@ -18,9 +18,23 @@ defmodule SchemaAssertions.SchemaTest do
       assert :ok = Schema.belongs_to?(Test.Schema.Room, :house, Test.Schema.House)
     end
 
+    test "returns :ok when the schema has a belongs_to relationship with matching :source" do
+      assert :ok = Schema.belongs_to?(Test.Schema.Pet, :home, Test.Schema.House, source: :house_id)
+    end
+
     test "returns error when the associated module does not match" do
       assert {:error, "Found module: Elixir.SchemaAssertions.Test.Schema.House"} =
                Schema.belongs_to?(Test.Schema.Room, :house, Test.Schema.Window)
+    end
+
+    test "returns error when the :source is incorrect" do
+      assert {:error, "home_id does not exist in table"} =
+               Schema.belongs_to?(Test.Schema.Pet, :home, Test.Schema.House, source: :residence_id)
+    end
+
+    test "returns error when no :source option provided for a schema with a custom source" do
+      assert {:error, "home_id does not exist in table"} =
+               Schema.belongs_to?(Test.Schema.Pet, :home, Test.Schema.House)
     end
 
     test "returns error when the schema does not have a belongs_to relationship" do

@@ -11,5 +11,7 @@ defmodule SchemaAssertions.Test.Schema.Pet do
     field :dob_usec, :naive_datetime
     field :nickname, :string
     field :teeth_count, :integer
+
+    belongs_to :home, SchemaAssertions.Test.Schema.House, source: :house_id
   end
 end
