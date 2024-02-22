@@ -14,7 +14,7 @@ defmodule SchemaAssertions.SchemaTest do
   end
 
   describe "belongs_to?" do
-    test "returns :ok when the schema has a has_many relationship" do
+    test "returns :ok when the schema has a belongs_to relationship" do
       assert :ok = Schema.belongs_to?(Test.Schema.Room, :house, Test.Schema.House)
     end
 
