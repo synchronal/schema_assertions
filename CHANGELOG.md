@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## v0.5.0
+
 - Add support for `:source` override in `assert_belongs_to`.
 
 ## v0.4.2
