@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+- Add support for `:source` override in `assert_belongs_to`.
+
 ## v0.4.2
 
 - Update deps.
