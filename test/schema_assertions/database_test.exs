@@ -24,6 +24,7 @@ defmodule SchemaAssertions.DatabaseTest do
                favorite_numbers: {:array, :integer},
                feet_count: :integer,
                friendly: :boolean,
+               house_id: :bigint,
                id: :uuid,
                last_seen_vet: :utc_datetime,
                last_seen_vet_usec: :utc_datetime_usec,

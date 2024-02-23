@@ -30,10 +30,14 @@ defmodule SchemaAssertions do
       iex> alias SchemaAssertions.Test.Schema
       iex> SchemaAssertions.assert_belongs_to(Schema.Room, :house, Schema.House)
       true
+
+      iex> alias SchemaAssertions.Test.Schema
+      iex> SchemaAssertions.assert_belongs_to(Schema.Pet, :home, Schema.House, source: :house_id)
+      true
   """
-  @spec assert_belongs_to(module(), atom(), module()) :: true
-  def assert_belongs_to(schema_module, association, association_module) do
-    case Schema.belongs_to?(schema_module, association, association_module) do
+  @spec assert_belongs_to(module(), atom(), module(), Keyword.t()) :: true
+  def assert_belongs_to(schema_module, association, association_module, opts \\ []) do
+    case Schema.belongs_to?(schema_module, association, association_module, opts) do
       :ok ->
         true
 
