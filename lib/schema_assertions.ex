@@ -35,7 +35,7 @@ defmodule SchemaAssertions do
       iex> SchemaAssertions.assert_belongs_to(Schema.Pet, :home, Schema.House, source: :house_id)
       true
   """
-  @spec assert_belongs_to(module(), atom(), module(), Keyword.t()) :: true
+  @spec assert_belongs_to(module(), atom(), module(), opts :: Schema.belongs_to_opts()) :: true
   def assert_belongs_to(schema_module, association, association_module, opts \\ []) do
     case Schema.belongs_to?(schema_module, association, association_module, opts) do
       :ok ->

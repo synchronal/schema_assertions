@@ -2,8 +2,10 @@ defmodule SchemaAssertions.Schema do
   # @related [test](/test/schema_assertions/schema_test.exs)
   @moduledoc "Ecto schema introspection"
 
+  @type belongs_to_opts() :: [source: atom()]
+
   @doc "Returns true if the given module has a belongs_to relationship"
-  @spec belongs_to?(module(), atom(), module(), Keyword.t()) :: :ok | {:error, String.t()}
+  @spec belongs_to?(module(), atom(), module(), opts :: belongs_to_opts()) :: :ok | {:error, String.t()}
   def belongs_to?(module, assoc_name, assoc_module, opts \\ []) do
     case module.__schema__(:association, assoc_name) do
       %Ecto.Association.BelongsTo{queryable: ^assoc_module, owner_key: owner_key} ->
