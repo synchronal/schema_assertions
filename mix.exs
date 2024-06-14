@@ -26,7 +26,7 @@ defmodule SchemaAssertions.MixProject do
       description: "ExUnit assertions for Ecto schemas",
       dialyzer: dialyzer(),
       docs: docs(),
-      elixir: "~> 1.12",
+      elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       homepage_url: @scm_url,
       name: "Schema Assertions",

@@ -14,29 +14,11 @@ jobs:
       matrix:
         include:
           - pair:
-              elixir: 1.12.0
-              otp: 23.3
+              elixir: 1.15.0
+              otp: 25.0
           - pair:
-              elixir: 1.13.0
-              otp: 23.3
-          - pair:
-              elixir: 1.14.5
-              otp: 25.3
-          - pair:
-              elixir: 1.14.5
-              otp: 26.2
-          - pair:
-              elixir: 1.15.7
-              otp: 25.3
-          - pair:
-              elixir: 1.15.7
-              otp: 26.2
-          - pair:
-              elixir: 1.16.0
-              otp: 25.3
-          - pair:
-              elixir: 1.16.2
-              otp: 26.2.2
+              elixir: 1.17.0
+              otp: 27.0
     name: Build Test
     runs-on: ubuntu-20.04
     env:
@@ -72,29 +54,11 @@ jobs:
       matrix:
         include:
           - pair:
-              elixir: 1.12.0
-              otp: 23.3
+              elixir: 1.15.0
+              otp: 25.0
           - pair:
-              elixir: 1.13.0
-              otp: 23.3
-          - pair:
-              elixir: 1.14.5
-              otp: 25.3
-          - pair:
-              elixir: 1.14.5
-              otp: 26.2
-          - pair:
-              elixir: 1.15.7
-              otp: 25.3
-          - pair:
-              elixir: 1.15.7
-              otp: 26.2
-          - pair:
-              elixir: 1.16.0
-              otp: 25.3
-          - pair:
-              elixir: 1.16.2
-              otp: 26.2.2
+              elixir: 1.17.0
+              otp: 27.0
     name: Build Dev
     runs-on: ubuntu-20.04
     env:
@@ -130,30 +94,11 @@ jobs:
       matrix:
         include:
           - pair:
-              elixir: 1.12.0
-              otp: 23.3
+              elixir: 1.15.0
+              otp: 25.0
           - pair:
-              elixir: 1.13.0
-              otp: 23.3
-          - pair:
-              elixir: 1.14.5
-              otp: 25.3
-          - pair:
-              elixir: 1.14.5
-              otp: 26.2
-          - pair:
-              elixir: 1.15.7
-              otp: 25.3
-          - pair:
-              elixir: 1.15.7
-              otp: 26.2
-          - pair:
-              elixir: 1.16.0
-              otp: 25.3
-          - pair:
-              elixir: 1.16.2
-              otp: 26.2.2
-            latest: true
+              elixir: 1.17.0
+              otp: 27.0
     name: Test
     needs: build_test
     runs-on: ubuntu-20.04
@@ -161,7 +106,7 @@ jobs:
       MIX_ENV: test
     services:
       postgres:
-        image: postgres:16.2-alpine
+        image: postgres:16.3-alpine
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
@@ -205,29 +150,11 @@ jobs:
       matrix:
         include:
           - pair:
-              elixir: 1.12.0
-              otp: 23.3
+              elixir: 1.15.0
+              otp: 25.0
           - pair:
-              elixir: 1.13.0
-              otp: 23.3
-          - pair:
-              elixir: 1.14.5
-              otp: 25.3
-          - pair:
-              elixir: 1.14.5
-              otp: 26.2
-          - pair:
-              elixir: 1.15.7
-              otp: 25.3
-          - pair:
-              elixir: 1.15.7
-              otp: 26.2
-          - pair:
-              elixir: 1.16.0
-              otp: 25.3
-          - pair:
-              elixir: 1.16.2
-              otp: 26.2.2
+              elixir: 1.17.0
+              otp: 27.0
     name: Credo + Dialyxir
     needs: build_test
     runs-on: ubuntu-20.04
@@ -269,8 +196,8 @@ jobs:
       matrix:
         include:
           - pair:
-              elixir: 1.16.2
-              otp: 26.2.2
+              elixir: 1.17.0
+              otp: 27.0
     name: Audit
     needs: build_dev
     runs-on: ubuntu-20.04
@@ -310,8 +237,8 @@ jobs:
       matrix:
         include:
           - pair:
-              elixir: 1.16.2
-              otp: 26.2.2
+              elixir: 1.17.0
+              otp: 27.0
     name: Publish to Hex
     if: github.ref == 'refs/heads/main'
     needs:

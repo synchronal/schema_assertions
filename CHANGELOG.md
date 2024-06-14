@@ -2,6 +2,9 @@
 
 ## Unreleased changes
 
+- Verify support for Elixir 1.17.0.
+- *Breaking*: Drop support for Elixir older than 1.15.0.
+
 ## v0.5.0
 
 - Add support for `:source` override in `assert_belongs_to`.
