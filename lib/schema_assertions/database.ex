@@ -8,7 +8,25 @@ defmodule SchemaAssertions.Database do
   @doc "Returns a sorted list of all the table names"
   @spec all_table_names() :: [binary()]
   def all_table_names do
-    "select table_name from information_schema.tables where table_schema = 'public'"
+    all_tables_and_views_statement = """
+    SELECT
+      table_name
+    FROM
+      information_schema.tables
+    WHERE
+      table_schema = 'public'
+    """
+
+    all_materialized_views_statement = """
+    SELECT
+      matviewname AS table_name
+    FROM
+      pg_matviews
+    WHERE
+      schemaname = 'public'
+    """
+
+    "#{all_tables_and_views_statement} UNION #{all_materialized_views_statement}"
     |> query()
     |> List.flatten()
     |> Enum.sort()

@@ -17,6 +17,10 @@ defmodule SchemaAssertionsTest do
       SchemaAssertions.assert_belongs_to(Schema.HouseAddress, :house, Schema.House)
     end
 
+    test "succeeds when the schema is a materialized view with a relationship according the function args" do
+      SchemaAssertions.assert_belongs_to(Schema.MaterializedHouseAddress, :house, Schema.House)
+    end
+
     test "fails when no association exists" do
       assert_raise ExUnit.AssertionError,
                    """
@@ -122,7 +126,7 @@ defmodule SchemaAssertionsTest do
 
     test "fails when the table does not exist" do
       assert_raise ExUnit.AssertionError,
-                   ~s|\n\nDatabase table "non_existent_table_name" not found in ["cars", "house_addresses", "houses", "pets", "rooms", "schema_migrations"]\n|,
+                   ~s|\n\nDatabase table "non_existent_table_name" not found in ["cars", "house_addresses", "houses", "materialized_house_addresses", "pets", "rooms", "schema_migrations"]\n|,
                    fn ->
                      SchemaAssertions.assert_schema(SchemaAssertions.Test.Schema.House, "non_existent_table_name")
                    end
