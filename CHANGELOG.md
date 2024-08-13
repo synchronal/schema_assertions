@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+- Verify support for table views (PostgreSQL)
+
 ## v1.0.0
 
 - Verify support for Elixir 1.17.0.
