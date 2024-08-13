@@ -9,6 +9,7 @@ defmodule SchemaAssertions.DatabaseTest do
                "cars",
                "house_addresses",
                "houses",
+               "materialized_house_addresses",
                "pets",
                "rooms",
                "schema_migrations"
@@ -26,6 +27,13 @@ defmodule SchemaAssertions.DatabaseTest do
 
     test "translates columns for a view into a keyword list of fields, in alphabetical order" do
       assert Database.fieldset("house_addresses") == [
+               address: :text,
+               house_id: :bigint
+             ]
+    end
+
+    test "translates columns for a materialized view into a keyword list of fields, in alphabetical order" do
+      assert Database.fieldset("materialized_house_addresses") == [
                address: :text,
                house_id: :bigint
              ]
