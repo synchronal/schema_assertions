@@ -5,7 +5,14 @@ defmodule SchemaAssertions.DatabaseTest do
 
   describe "all_table_names" do
     test "lists all the table names, in alphabetical order" do
-      assert Database.all_table_names() == ["cars", "houses", "pets", "rooms", "schema_migrations"]
+      assert Database.all_table_names() == [
+               "cars",
+               "house_addresses",
+               "houses",
+               "pets",
+               "rooms",
+               "schema_migrations"
+             ]
     end
   end
 
@@ -14,6 +21,13 @@ defmodule SchemaAssertions.DatabaseTest do
       assert Database.fieldset("houses") == [
                address: :text,
                id: :bigserial
+             ]
+    end
+
+    test "translates columns for a view into a keyword list of fields, in alphabetical order" do
+      assert Database.fieldset("house_addresses") == [
+               address: :text,
+               house_id: :bigint
              ]
     end
 
