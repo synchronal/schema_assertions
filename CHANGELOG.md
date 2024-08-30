@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## v1.1.0
+
 - Verify support for table views (PostgreSQL)
 - Add support for materialized table views (PostgreSQL)
 
