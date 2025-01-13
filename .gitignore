@@ -1,6 +1,4 @@
 *.ez
-.medic/.doctor.out
-.medic/skipped
 /.fetch
 /.local
 /_build/
@@ -10,5 +8,6 @@
 /priv/plts
 /priv/postgres
 /tmp/
+Brewfile.lock.json
 erl_crash.dump
 schema_assertions-*.tar

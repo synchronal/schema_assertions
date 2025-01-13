@@ -2,12 +2,7 @@
 
 ExUnit assertions for Ecto schemas.
 
-Work in progress.
-
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `schema_assertions` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -17,9 +12,18 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/schema_assertions](https://hexdocs.pm/schema_assertions).
+## Development
+
+SchemaAssertions uses [medic](https://github.com/synchronal/medic-rs) for its development workflow.
+
+``` shell
+brew bundle
+medic doctor
+medic test
+medic audit
+medic update
+medic shipit
+```
 
 ## Other useful schema-related libraries
 
