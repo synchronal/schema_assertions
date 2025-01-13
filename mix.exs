@@ -55,7 +55,7 @@ defmodule SchemaAssertions.MixProject do
       {:ecto_sql, "~> 3.0", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:mix_audit, "~> 2.0", only: :dev, runtime: false},
-      {:mix_test_interactive, "~> 2.0", only: [:dev, :test], runtime: false},
+      {:mix_test_interactive, "~> 4.0", only: [:dev, :test], runtime: false},
       {:postgrex, ">= 0.0.0", only: :test}
     ]
   end
