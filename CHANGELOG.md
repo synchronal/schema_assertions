@@ -2,6 +2,9 @@
 
 ## Unreleased changes
 
+- Test against Elixir 1.18.
+- **Breaking change:** Drop support for Elixir 1.15.
+
 ## v1.1.0
 
 - Verify support for table views (PostgreSQL)
