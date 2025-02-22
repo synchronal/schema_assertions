@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## v2.0.1
+
 - Add sponsorship link.
 
 ## v2.0.0
