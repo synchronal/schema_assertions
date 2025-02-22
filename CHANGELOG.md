@@ -2,6 +2,10 @@
 
 ## Unreleased changes
 
+- Add sponsorship link.
+
+## v2.0.0
+
 - Test against Elixir 1.18.
 - **Breaking change:** Drop support for Elixir 1.15.
 

@@ -89,7 +89,7 @@ defmodule SchemaAssertions.MixProject do
         mix.exs
       ],
       licenses: ["MIT"],
-      links: %{"GitHub" => @scm_url},
+      links: %{"GitHub" => @scm_url, "Sponsor" => "https://github.com/sponsors/reflective-dev"},
       maintainers: ["synchronal.dev", "Erik Hanson", "Eric Saxby"]
     ]
   end
