@@ -2,6 +2,10 @@
 
 ## Unreleased changes
 
+## v2.1.1
+
+- Add documentation for `assert_enum`.
+
 ## v2.1.0
 
 - Add `SchemaAssertions.assert_enum/2`.
