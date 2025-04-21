@@ -57,6 +57,19 @@ defmodule SchemaAssertions do
     end
   end
 
+  @doc """
+  Asserts that a given enum exists in the database with the specified values.
+
+  ## Example
+
+      iex> SchemaAssertions.assert_enum("bird_type", ["pigeon", "sparrow"])
+      true
+
+      iex> assert_raise ExUnit.AssertionError, fn ->
+      ...>   SchemaAssertions.assert_enum("does_not_exist", ["value"])
+      ...> end
+  """
+  @spec assert_enum(String.t(), [String.t()]) :: true | no_return()
   def assert_enum(name, values) do
     enums = Database.all_enums()
     assert_is_enum(enums, name)
