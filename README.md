@@ -7,7 +7,7 @@ ExUnit assertions for Ecto schemas.
 ```elixir
 def deps do
   [
-    {:schema_assertions, "~> 0.1"}
+    {:schema_assertions, "~> 2.0"}
   ]
 end
 ```
