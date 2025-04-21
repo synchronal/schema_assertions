@@ -35,12 +35,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: deps
-          key: ${{ runner.os }}-test-deps-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-test-deps-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Cache _build
         uses: actions/cache@v4
         with:
           path: _build
-          key: ${{ runner.os }}-test-build-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-test-build-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Install dependencies
         run: mix deps.get
         working-directory: .
@@ -74,12 +74,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: deps
-          key: ${{ runner.os }}-dev-deps-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-dev-deps-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Cache _build
         uses: actions/cache@v4
         with:
           path: _build
-          key: ${{ runner.os }}-dev-build-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-dev-build-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Install dependencies
         run: mix deps.get
         working-directory: .
@@ -128,12 +128,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: deps
-          key: ${{ runner.os }}-test-deps-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-test-deps-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Cache _build
         uses: actions/cache@v4
         with:
           path: _build
-          key: ${{ runner.os }}-test-build-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-test-build-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Run tests (exclude latest)
         run: mix test --color --warnings-as-errors --exclude only_latest
         working-directory: .
@@ -169,17 +169,17 @@ jobs:
         uses: actions/cache@v4
         with:
           path: deps
-          key: ${{ runner.os }}-test-deps-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-test-deps-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Cache _build
         uses: actions/cache@v4
         with:
           path: _build
-          key: ${{ runner.os }}-test-build-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-test-build-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Cache PLTs
         uses: actions/cache@v4
         with:
           path: priv/plts
-          key: ${{ runner.os }}-test-dialyzer-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-test-dialyzer-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Credo
         run: mix credo --strict
         working-directory: .
@@ -211,12 +211,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: deps
-          key: ${{ runner.os }}-dev-deps-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-dev-deps-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Cache _build
         uses: actions/cache@v4
         with:
           path: _build
-          key: ${{ runner.os }}-dev-build-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-dev-build-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Check Elixir formatting
         run: mix format --check-formatted
         working-directory: .
@@ -253,12 +253,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: deps
-          key: ${{ runner.os }}-dev-deps-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-dev-deps-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Cache _build
         uses: actions/cache@v4
         with:
           path: _build
-          key: ${{ runner.os }}-dev-build-v1-${{ hashFiles('**/mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
+          key: ${{ runner.os }}-dev-build-v1-${{ hashFiles('mix.lock') }}-${{ steps.beam.outputs.otp-version }}-${{ steps.beam.outputs.elixir-version }}
       - name: Publish to Hex
         uses: synchronal/hex-publish-action@v3
         with:
