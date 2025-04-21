@@ -8,6 +8,14 @@ defmodule SchemaAssertionsTest do
 
   @moduletag :only_latest
 
+  def squish(string) do
+    String.replace(string, ~r{\n+(     )?}, "\n") |> String.trim()
+  end
+
+  def strip_ansi(ansi_string) when is_binary(ansi_string) do
+    String.replace(ansi_string, ~r/\e\[\d+m/, "")
+  end
+
   describe "assert_belongs_to" do
     test "succeeds when the schema has a relationship according the function args" do
       SchemaAssertions.assert_belongs_to(Schema.Room, :house, Schema.House)
@@ -82,8 +90,50 @@ defmodule SchemaAssertionsTest do
     end
   end
 
-  def strip_ansi(ansi_string) when is_binary(ansi_string) do
-    String.replace(ansi_string, ~r/\e\[\d+m/, "")
+  describe "assert_enum" do
+    test "succeeds when the enum exists and has the specified values" do
+      SchemaAssertions.assert_enum("my_test_result_type", ["failed", "pending", "running", "succeeded"])
+    end
+
+    test "fails when the enum does not exist" do
+      error =
+        assert_raise ExUnit.AssertionError, fn ->
+          SchemaAssertions.assert_enum("other_type", ["things", "stuff"])
+        end
+
+      msg = Exception.message(error)
+
+      assert msg |> strip_ansi() |> squish() ==
+               """
+               Expected enum to exist
+               expected: other_type
+               found:    bird_type
+                         my_test_result_type
+               """
+               |> String.trim()
+    end
+
+    test "fails when the enum values do not match expected" do
+      error =
+        assert_raise ExUnit.AssertionError, fn ->
+          SchemaAssertions.assert_enum("my_test_result_type", ["things", "stuff"])
+        end
+
+      msg = Exception.message(error)
+
+      assert msg |> strip_ansi() |> squish() ==
+               """
+               Expected enum values to match
+               enum:     my_test_result_type
+               found:    failed
+                         pending
+                         running
+                         succeeded
+               expected: stuff
+                         things
+               """
+               |> String.trim()
+    end
   end
 
   describe "assert_schema" do

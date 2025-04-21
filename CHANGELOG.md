@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+- Add `SchemaAssertions.assert_enum/2`.
+
 ## v2.0.1
 
 - Add sponsorship link.

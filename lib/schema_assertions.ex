@@ -57,6 +57,13 @@ defmodule SchemaAssertions do
     end
   end
 
+  def assert_enum(name, values) do
+    enums = Database.all_enums()
+    assert_is_enum(enums, name)
+    assert_enum_values(enums, name, values)
+    true
+  end
+
   @doc """
   Asserts that the given schema module exists and that its corresponding database table exists.
   """
@@ -167,6 +174,39 @@ defmodule SchemaAssertions do
 
   # # #
 
+  defp assert_enum_values(enums, name, expected) do
+    expected = Enum.sort(expected)
+
+    case Map.fetch!(enums, name) do
+      ^expected ->
+        :ok
+
+      found ->
+        flunk(
+          to_string(
+            IO.ANSI.format([
+              :red,
+              "Expected enum values to match\n",
+              :cyan,
+              "enum:     ",
+              :bright,
+              name,
+              :reset,
+              :cyan,
+              "\nfound:    ",
+              :green,
+              Enum.join(found, "\n          "),
+              :cyan,
+              "\nexpected: ",
+              :red,
+              Enum.join(expected, "\n          "),
+              :reset
+            ])
+          )
+        )
+    end
+  end
+
   def assert_fields(schema_module, fields) do
     fieldset =
       schema_module
@@ -199,6 +239,29 @@ defmodule SchemaAssertions do
   def assert_is_ecto_schema(schema_module) do
     assert Schema.ecto_schema?(schema_module),
            to_string(["Schema module ", inspect(schema_module), " is not an Ecto schema."])
+  end
+
+  defp assert_is_enum(enums, name) when is_map_key(enums, name), do: true
+
+  defp assert_is_enum(enums, name) do
+    flunk(
+      to_string(
+        IO.ANSI.format([
+          :red,
+          "Expected enum to exist\n",
+          :cyan,
+          "expected: ",
+          :red,
+          name,
+          "\n",
+          :cyan,
+          "found:    ",
+          :green,
+          Enum.join(Map.keys(enums), "\n          "),
+          :reset
+        ])
+      )
+    )
   end
 
   def assert_schema_module_exists(schema_module) do

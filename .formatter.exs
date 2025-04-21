@@ -10,6 +10,7 @@
       assert_changeset_fields: :*,
       assert_changeset_invalid: :*,
       assert_changeset_valid: :*,
+      assert_enum: :*,
       assert_has_many: :*,
       assert_has_one: :*,
       assert_schema: 3

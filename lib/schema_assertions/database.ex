@@ -5,6 +5,23 @@ defmodule SchemaAssertions.Database do
   Assumes Postgres for now.
   """
 
+  def all_enums do
+    """
+    select t.typname as enum_name,
+           array_agg(e.enumlabel) as enum_value,
+           n.nspname as enum_schema
+    from pg_type t
+      join pg_enum e on t.oid = e.enumtypid
+      join pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+    group by enum_schema, enum_name
+    order by enum_name, enum_schema;
+    """
+    |> query()
+    |> Map.new(fn [name, fields, _schema] ->
+      {name, Enum.sort(fields)}
+    end)
+  end
+
   @doc "Returns a sorted list of all the table names"
   @spec all_table_names() :: [binary()]
   def all_table_names do
